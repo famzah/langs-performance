@@ -9,7 +9,8 @@ function run_benchmark() {
 	VERSION_CMD="$4"
 	VERSION_FILTER_CMD="$5"
 
-	if [ "$($VERSION_CMD 2>/dev/null)" == "" ]; then
+	$VERSION_CMD >/dev/null 2>&1
+	if [ "$?" == 127 ]; then # "command not found"
 		return # skip non-existing interpreter
 	fi
 
@@ -34,10 +35,13 @@ C='g++'		; run_benchmark 'C++ (not optimized)' "$C -Wall primes.cpp -o primes.cp
 rm -f ./primes.cpp.out
 C='python2.7'	; run_benchmark 'Python 2.7' 'true' "$C ./primes.py" "$C -V" 'cat'
 C='python3.2'	; run_benchmark 'Python 3.2' 'true' "$C ./primes.py" "$C -V" 'cat'
+C='python3.5'	; run_benchmark 'Python 3.5' 'true' "$C ./primes.py" "$C -V" 'cat'
 C='perl'	; run_benchmark 'Perl' 'true' "$C ./primes.pl" "$C -v" 'grep built'
-C='php'		; run_benchmark 'PHP' 'true' "$C ./primes.php" "$C -v" 'head -n1'
+C='php5.6'	; run_benchmark 'PHP 5.6' 'true' "$C ./primes.php" "$C -v" 'head -n1'
+C='php7.0'	; run_benchmark 'PHP 7.0' 'true' "$C ./primes.php" "$C -v" 'head -n1'
 C='javac'	; run_benchmark 'Java (std)' "$C primes.java" 'java PrimeNumbersBenchmarkApp' "$C -version" 'cat'
 rm -f PrimeNumbersBenchmarkApp.class PrimeNumbersGenerator.class
 C='javac'	; run_benchmark 'Java (non-std)' "$C primes-non-std-lib.java" 'java PrimeNumbersBenchmarkApp' "$C -version" 'cat'
 rm -f PrimeNumbersBenchmarkApp.class PrimeNumbersGenerator.class IntList.class
 C='node'	; run_benchmark 'JavaScript (nodejs)' 'true' "$C ./primes.js" "$C -v" 'cat'
+C='nodejs'	; run_benchmark 'JavaScript (nodejs)' 'true' "$C ./primes.js" "$C -v" 'cat'
