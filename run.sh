@@ -9,6 +9,10 @@ function run_benchmark() {
 	VERSION_CMD="$4"
 	VERSION_FILTER_CMD="$5"
 
+	if [ "$($VERSION_CMD 2>/dev/null)" == "" ]; then
+		return # skip non-existing interpreter
+	fi
+
 	echo "== $HEADER =="
 	for n in {1..2}; do
 		$CMD1 && OUT=$(time $CMD2)
