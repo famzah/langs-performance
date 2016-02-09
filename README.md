@@ -2,6 +2,7 @@
 C++ vs. Python vs. Perl vs. PHP vs. Java vs. NodeJS performance benchmark
 
 Blog articles:
+* 2016: http://blog.famzah.net/2016/02/09/cpp-vs-python-vs-perl-vs-php-performance-benchmark-2016/
 * 2010-2012: http://blog.famzah.net/2010/07/01/cpp-vs-python-vs-perl-vs-php-performance-benchmark/
 
 The benchmarks here do not try to be complete, as they are showing the performance of the languages in one aspect, and mainly: loops, dynamic arrays with numbers, basic math operations.
