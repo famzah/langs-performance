@@ -13,7 +13,7 @@ func getPrimes7(n int) []int {
 		return []int{2}
 	}
 
-	s := make([]int, 0, n/2)
+	s := []int{}
 	for i := 3; i <= n; i += 2 {
 		s = append(s, i)
 	}
@@ -35,7 +35,7 @@ func getPrimes7(n int) []int {
 		m = 2*i + 3
 	}
 
-	res := make([]int, 0, n/int(math.Log(float64(n))))
+	res := []int{}
 	res = append(res, 2)
 	for _, v := range s {
 		if v != 0 {
