@@ -1,5 +1,5 @@
 # langs-performance
-C++ vs. Python vs. Perl vs. PHP vs. Java vs. NodeJS performance benchmark
+C++ vs. Python vs. Perl vs. PHP vs. Java vs. NodeJS vs. Go performance benchmark
 
 Blog articles:
 * 2016: http://blog.famzah.net/2016/02/09/cpp-vs-python-vs-perl-vs-php-performance-benchmark-2016/
