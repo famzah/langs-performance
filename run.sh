@@ -33,6 +33,9 @@ C='g++'		; run_benchmark 'C++ (optimized with -O2)' "$C -Wall -O2 primes.cpp -o 
 rm -f ./primes.cpp.out
 C='g++'		; run_benchmark 'C++ (not optimized)' "$C -Wall primes.cpp -o primes.cpp.out" './primes.cpp.out' "$C --version" 'head -n1'
 rm -f ./primes.cpp.out
+C='go'	; run_benchmark 'Go (not optimized, default compiler)' "$C build primes.go" './primes' "$C version" 'cat'
+go clean
+C='pypy'	; run_benchmark 'PyPy 2.7' 'true' "$C ./primes.py" "$C -V" 'cat'
 C='python2.7'	; run_benchmark 'Python 2.7' 'true' "$C ./primes.py" "$C -V" 'cat'
 C='python3.2'	; run_benchmark 'Python 3.2' 'true' "$C ./primes.py" "$C -V" 'cat'
 C='python3.5'	; run_benchmark 'Python 3.5' 'true' "$C ./primes.py" "$C -V" 'cat'
