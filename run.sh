@@ -11,6 +11,7 @@ function run_benchmark() {
 
 	$VERSION_CMD >/dev/null 2>&1
 	if [ "$?" == 127 ]; then # "command not found"
+		echo "SKIPPING: $HEADER / $VERSION_CMD"
 		return # skip non-existing interpreter
 	fi
 
