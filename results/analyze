@@ -1,0 +1,86 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+use Data::Dumper;
+
+sub parse_section {
+	my $data = shift;
+	my $i;
+	my $deviation;
+	my $cnt;
+
+	$cnt = scalar @{$data->{'user'}};
+	if (scalar @{$data->{'user'}} != scalar @{$data->{'sys'}}) {
+		die("ERROR: User and System CPU measures do not match as a count: $cnt");
+	}
+
+	my $avg = 0;
+	for ($i = 0; $i < $cnt; ++$i) {
+		$data->{'total'}->[$i] = $data->{'user'}->[$i] + $data->{'sys'}->[$i];
+		$avg += $data->{'total'}->[$i];
+	}
+
+	$avg = $avg / $cnt;
+	$data->{'total_avg'} = $avg;
+
+	for ($i = 0; $i < $cnt; ++$i) {
+		$deviation = (($avg - $data->{'total'}->[$i]) / $avg) * 100;
+		if (abs($deviation) > 5) {
+			print Dumper($data)."\n";
+			die(sprintf(
+				"ERROR: Measurement deviations are too high: %.1f\n", $deviation
+			));
+		}
+	}
+
+	return $data;
+}
+
+sub main {
+	my $file = 'data.raw';
+	my $line;
+	my $data = undef;
+	my @final_data = ();
+
+	open(F, '<', $file) or die("open($file): $!");
+
+	while ($line = <F>) {
+		chomp($line);
+		if ($line =~ /^== (.+) ==$/) { # begin of a section
+			if (defined($data)) {
+				push(@final_data, parse_section($data));
+			}
+			$data = {};
+			$data->{'label'} = $1;
+			$data->{'user'} = [];
+			$data->{'sys'} = [];
+			$data->{'version'} = [];
+			next;
+		}
+		if (!defined($data)) {
+			die("ERROR: The first section is not started, yet");
+		}
+		if ($line =~ /^\s*$/) {
+			next;
+		}
+		if ($line =~ /^real\s+\d/) {
+			next;
+		}
+		#                 $1         $2    $3     $4
+		if ($line =~ /^(user|sys)\s+(\d+)m(\d+)\.(\d+)s$/) {
+			push(@{$data->{$1}}, ($2 * 60 + $3 + $4/1000));
+			next;
+		}
+		push(@{$data->{'version'}}, $line);
+	}
+
+	@final_data = sort {
+		$a->{'total_avg'} <=> $b->{'total_avg'}
+	} @final_data;
+	print Dumper(@final_data);
+}
+
+die("Work in progress. This has not been completed nor tested");
+
+main();
