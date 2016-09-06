@@ -1,33 +1,64 @@
 #!/bin/bash
 
 EXPSTR='Found 664579 prime numbers.'
+RUN_TIME=90 # CPU time seconds
+
+echo "# Run time limited to $RUN_TIME CPU seconds"
+echo "#"
 
 function run_benchmark() {
 	HEADER="$1"
-	CMD1="$2"
-	CMD2="$3"
+	COMPILE_CMD="$2"
+	RUN_CMD="$3"
 	VERSION_CMD="$4"
 	VERSION_FILTER_CMD="$5"
 
 	$VERSION_CMD >/dev/null 2>&1
 	if [ "$?" == 127 ]; then # "command not found"
-		echo "SKIPPING: $HEADER / $VERSION_CMD"
+		echo "SKIPPING: $HEADER / $VERSION_CMD" >&2
 		return # skip non-existing interpreter
 	fi
 
-	echo "== $HEADER =="
+	VERSION_OUT="$( $VERSION_CMD 2>&1 | $VERSION_FILTER_CMD | tr '\n' ' ' )"
+
+	echo "# $HEADER"
+
+	echo "# ... compilation"
+	$COMPILE_CMD || exit 1 # compilation failed
+
 	for n in {1..2}; do
-		$CMD1 && OUT=$(time $CMD2)
+		echo "# ... run $n"
 
-		echo "$OUT" | grep -xv "$EXPSTR" # check that all scripts output the same lines
+		TIMES_FILE="$(mktemp --suffix .langs_perf)" || exit 1
 
-		NLINES=$(echo "$OUT"|wc -l)
-		[ "$NLINES" == '10' ] || echo "Unexpected loops count: $NLINES"
+		# force unbuffered output by using "stdbuf" or else we lose the output on SIGKILL
+		OUT="$(
+		{
+			ulimit -t "$RUN_TIME" || exit 1
+			/usr/bin/time -o "$TIMES_FILE" --format \
+				'real_TIME:%esec user_CPU:%Usec sys_CPU:%Ssec max_RSS:%Mkb swaps:%W ctx_sw:%c+%w' \
+				stdbuf -o0 -e0 $RUN_CMD
+		} 2>&1
+		)"
+
+		TIMES_OUT="$(cat "$TIMES_FILE" | grep -vx 'Command terminated by signal 9')"
+		rm "$TIMES_FILE"
+
+		# check that all scripts output the same lines
+		if [ "$(echo "$OUT" | grep -xv "$EXPSTR")" != '' ]; then
+			echo "ERROR: Unexpected output: $OUT" >&2
+			exit 1
+		fi
+
+		NLINES="$(echo "$OUT"|wc -l)"
+		if [ "$NLINES" -lt 10 ]; then
+			echo "ERROR: Not enough successful loops: $NLINES" >&2
+			echo "$OUT" >&2
+			exit 1
+		fi
+
+		echo "$TIMES_OUT nlines:$NLINES run_try:$n header:'$HEADER' version:'$VERSION_OUT'"
 	done
-	echo
-
-	$VERSION_CMD | $VERSION_FILTER_CMD
-	echo
 }
 
 C='g++'		; run_benchmark 'C++ (optimized with -O2)' "$C -Wall -O2 primes.cpp -o primes.cpp.out" './primes.cpp.out' "$C --version" 'head -n1'
