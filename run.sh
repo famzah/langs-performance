@@ -1,4 +1,5 @@
 #!/bin/bash
+set -u
 
 EXPSTR='Found 664579 prime numbers.'
 RUN_TIME=90 # CPU time seconds
