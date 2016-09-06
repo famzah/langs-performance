@@ -63,31 +63,52 @@ function run_benchmark() {
 	done
 }
 
-C='g++'		; SRC='primes.cpp'      ; run_benchmark 'C++ (optimized with -O2)' "$C -Wall -O2 $SRC -o primes.cpp.out" './primes.cpp.out' "$C --version" 'head -n1' "$SRC"
+##
+
+C='g++' ; SRC='primes.cpp' ; run_benchmark 'C++ (optimized with -O2)' \
+	"$C -Wall -O2 $SRC -o primes.cpp.out" './primes.cpp.out' "$C --version" 'head -n1' "$SRC"
 rm -f ./primes.cpp.out
 
-C='g++'		; SRC='primes.cpp'      ; run_benchmark 'C++ (not optimized)'      "$C -Wall     $SRC -o primes.cpp.out" './primes.cpp.out' "$C --version" 'head -n1' "$SRC"
+C='g++' ; SRC='primes.cpp' ; run_benchmark 'C++ (not optimized)' \
+	"$C -Wall     $SRC -o primes.cpp.out" './primes.cpp.out' "$C --version" 'head -n1' "$SRC"
 rm -f ./primes.cpp.out
 
-C='go'	; SRC='primes.go'               ; run_benchmark 'Go (not optimized, default compiler)' "$C build $SRC" './primes' "$C version" 'cat' "$SRC"
+##
+
+C='go' ; SRC='primes.go'   ; run_benchmark 'Go (not optimized)' \
+	"$C build $SRC" './primes' "$C version" 'cat' "$SRC"
 go clean
 
-C='pypy'	; SRC='primes.py'       ; run_benchmark 'PyPy 2.7'   'true' "$C $SRC" "$C -V" 'cat' "$SRC"
-C='python2.7'	; SRC='primes.py'       ; run_benchmark 'Python 2.7' 'true' "$C $SRC" "$C -V" 'cat' "$SRC"
-C='python3.2'	; SRC='primes.py'       ; run_benchmark 'Python 3.2' 'true' "$C $SRC" "$C -V" 'cat' "$SRC"
-C='python3.5'	; SRC='primes.py'       ; run_benchmark 'Python 3.5' 'true' "$C $SRC" "$C -V" 'cat' "$SRC"
-C='perl'	; SRC='primes.pl'       ; run_benchmark 'Perl' 'true' "$C $SRC" "$C -v" 'grep built' "$SRC"
-C='php5.6'	; SRC='primes.php'      ; run_benchmark 'PHP 5.6' 'true' "$C $SRC" "$C -v" 'head -n1' "$SRC"
-C='php7.0'	; SRC='primes.php'      ; run_benchmark 'PHP 7.0' 'true' "$C $SRC" "$C -v" 'head -n1' "$SRC"
+##
 
-C='javac'	; SRC='primes.java'     ; run_benchmark 'Java (std)'     "$C $SRC" 'java PrimeNumbersBenchmarkApp' "$C -version" 'cat' "$SRC"
-rm -f PrimeNumbersBenchmarkApp.class PrimeNumbersGenerator.class
+C='pypy'      ; SRC='primes.py'  ; run_benchmark 'PyPy 2.7'   'true' "$C $SRC" "$C -V" 'cat' "$SRC"
+C='python2.7' ; SRC='primes.py'  ; run_benchmark 'Python 2.7' 'true' "$C $SRC" "$C -V" 'cat' "$SRC"
+C='python3.2' ; SRC='primes.py'  ; run_benchmark 'Python 3.2' 'true' "$C $SRC" "$C -V" 'cat' "$SRC"
+C='python3.5' ; SRC='primes.py'  ; run_benchmark 'Python 3.5' 'true' "$C $SRC" "$C -V" 'cat' "$SRC"
+C='perl'      ; SRC='primes.pl'  ; run_benchmark 'Perl' 'true' "$C $SRC" "$C -v" 'grep built' "$SRC"
+C='php5.6'    ; SRC='primes.php' ; run_benchmark 'PHP 5.6' 'true' "$C $SRC" "$C -v" 'head -n1' "$SRC"
+C='php7.0'    ; SRC='primes.php' ; run_benchmark 'PHP 7.0' 'true' "$C $SRC" "$C -v" 'head -n1' "$SRC"
 
-C='javac'	; SRC='primes-alt.java' ; run_benchmark 'Java (non-std)' "$C $SRC" 'java PrimeNumbersBenchmarkApp' "$C -version" 'cat' "$SRC"
-rm -f PrimeNumbersBenchmarkApp.class PrimeNumbersGenerator.class IntList.class
+##
+
+JF1='PrimeNumbersBenchmarkApp'
+JF2='PrimeNumbersGenerator'
+JF3='IntList'
+
+C='javac' ; SRC='primes.java'     ; run_benchmark 'Java (std)' \
+	"$C $SRC" "java $JF1" "$C -version" 'cat' "$SRC"
+rm -f ${JF1}.class ${JF2}.class
+
+C='javac' ; SRC='primes-alt.java' ; run_benchmark 'Java (non-std)' \
+	"$C $SRC" "java $JF1" "$C -version" 'cat' "$SRC"
+rm -f ${JF1}.class ${JF2}.class ${JF3}.class
+
+##
 
 # Node.js has two different binary names; try both of them
-C='node'	; SRC='primes.js'       ; run_benchmark 'JavaScript (nodejs)' 'true' "$C $SRC" "$C -v" 'cat' "$SRC"
-C='nodejs'	; SRC='primes.js'       ; run_benchmark 'JavaScript (nodejs)' 'true' "$C $SRC" "$C -v" 'cat' "$SRC"
+C='node'   ; SRC='primes.js' ; run_benchmark 'JavaScript (nodejs)' 'true' "$C $SRC" "$C -v" 'cat' "$SRC"
+C='nodejs' ; SRC='primes.js' ; run_benchmark 'JavaScript (nodejs)' 'true' "$C $SRC" "$C -v" 'cat' "$SRC"
 
-C='ruby'	; SRC='primes.rb'       ; run_benchmark 'Ruby' 'true' "$C $SRC" "$C -v" 'cat' "$SRC"
+##
+
+C='ruby' ; SRC='primes.rb' ; run_benchmark 'Ruby' 'true' "$C $SRC" "$C -v" 'cat' "$SRC"
