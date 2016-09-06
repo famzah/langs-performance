@@ -80,3 +80,4 @@ C='javac'	; run_benchmark 'Java (non-std)' "$C primes-non-std-lib.java" 'java Pr
 rm -f PrimeNumbersBenchmarkApp.class PrimeNumbersGenerator.class IntList.class
 C='node'	; run_benchmark 'JavaScript (nodejs)' 'true' "$C ./primes.js" "$C -v" 'cat'
 C='nodejs'	; run_benchmark 'JavaScript (nodejs)' 'true' "$C ./primes.js" "$C -v" 'cat'
+C='ruby'	; run_benchmark 'Ruby' 'true' "$C ./primes.rb" "$C -v" 'cat'
