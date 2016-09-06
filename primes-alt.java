@@ -86,7 +86,7 @@ class IntList {
 class PrimeNumbersBenchmarkApp {
 	public static void main(String[] args) {
 		IntList res;
-		for (int i = 1; i <= 10; ++i) {
+		while (true) {
 			res = (new PrimeNumbersGenerator()).get_primes7(10000000);
 			System.out.format("Found %d prime numbers.\n", res.size());
 		}

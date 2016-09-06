@@ -34,7 +34,7 @@ function get_primes7(n) {
 	return res;
 }
 
-for (var i = 0; i < 10; i++) {
+while (1) {
 	var res = get_primes7(10000000);
 	console.log("Found " + res.length + " prime numbers.");
 }

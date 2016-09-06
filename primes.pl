@@ -36,7 +36,7 @@ sub get_primes7($) {
 }
 
 my @res;
-for (1..10) {
+while (1) {
 	@res = get_primes7(10000000);
 	print "Found ".(scalar @res)." prime numbers.\n";
 }

@@ -32,7 +32,7 @@ function get_primes7($n) {
 }
 
 $res = array();
-for ($i = 1; $i <= 10; ++$i) {
+while (1) {
 	$res = get_primes7(10000000);
 	print "Found ".count($res)." prime numbers.\n";
 }

@@ -59,7 +59,7 @@ void get_primes7(int n, vector<int> &res) {
 }
 
 int main() {
-	for (int i = 1; i <= 10; ++i) {
+	while (1) {
 		vector<int> res;
 		get_primes7(10000000, res);
 		printf("Found %d prime numbers.\n", (int)res.size());

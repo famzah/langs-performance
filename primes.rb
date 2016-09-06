@@ -24,7 +24,7 @@ def get_primes7(n)
   [2] + s.compact
 end
 
-10.times do
+loop do
   res = get_primes7(10000000)
 	puts "Found #{res.length} prime numbers."
 end

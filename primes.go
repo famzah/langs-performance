@@ -48,7 +48,7 @@ func getPrimes7(n int) []int {
 
 func main() {
 	var res []int
-	for i := 0; i < 10; i++ {
+	for {
 		res = getPrimes7(10000000)
 		fmt.Printf("Found %d prime numbers.\n", len(res))
 	}

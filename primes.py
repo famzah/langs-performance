@@ -28,6 +28,6 @@ def get_primes7(n):
 		m = 2*i+3
 	return [2]+[x for x in s if x]
 
-for t in range(10):
+while True:
 	res = get_primes7(10000000)
 	print("Found {} prime numbers.".format(len(res)))
