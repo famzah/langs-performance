@@ -28,12 +28,16 @@ function run_benchmark() {
 	echo "# ... compilation"
 	$COMPILE_CMD || exit 1 # compilation failed
 
-	for n in {1..2}; do
+	for n in {1..3}; do
 		echo "# ... run $n"
 
 		TIMES_FILE="$(mktemp --suffix .langs_perf)" || exit 1
 
-		# force unbuffered output by using "stdbuf" or else we lose the output on SIGKILL
+		# Limit the total CPU time by using "ulimit".
+		# Note: This increases the memory usage but should still provide linear performance.
+
+		# Force unbuffered output by using "stdbuf" or else we lose the output on SIGKILL.
+
 		OUT="$(
 		{
 			ulimit -t "$RUN_TIME" || exit 1
