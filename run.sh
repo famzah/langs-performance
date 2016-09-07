@@ -2,7 +2,7 @@
 set -u
 
 EXPSTR='Found 664579 prime numbers.'
-RUN_TIME=90 # CPU time seconds
+RUN_TIME="${RUN_TIME:=90}" # CPU time seconds
 
 echo "# Run time limited to $RUN_TIME CPU seconds"
 echo "#"
