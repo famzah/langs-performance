@@ -43,8 +43,12 @@ class PrimeNumbersGenerator {
 
 class PrimeNumbersBenchmarkApp {
 	public static void main(String[] args) {
+		long startTime = System.currentTimeMillis();
+		long periodTime = Long.parseLong(System.getenv("RUN_TIME"), 10) * 1000;
+
 		ArrayList<Integer> res;
-		while (true) {
+
+		while ((System.currentTimeMillis() - startTime) < periodTime) {
 			res = (new PrimeNumbersGenerator()).get_primes7(10000000);
 			System.out.format("Found %d prime numbers.\n", res.size());
 		}
