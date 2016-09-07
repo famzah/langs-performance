@@ -3,6 +3,7 @@ set -u
 
 EXPSTR='Found 664579 prime numbers.'
 RUN_TIME="${RUN_TIME:=90}" # CPU time seconds
+SRC_FILTER="${SRC_FILTER:=x}" # execute only given tests
 
 echo "# Run time limited to $RUN_TIME CPU seconds"
 echo "#"
@@ -14,6 +15,12 @@ function run_benchmark() {
 	VERSION_CMD="$4"
 	VERSION_FILTER_CMD="$5"
 	SRC_FILE="$6"
+
+	if [ "$SRC_FILTER" != 'x' ]; then
+		if [ "$SRC_FILE" != "$SRC_FILTER" ]; then
+			return
+		fi
+	fi
 
 	$VERSION_CMD >/dev/null 2>&1
 	if [ "$?" == 127 ]; then # "command not found"
