@@ -3,7 +3,10 @@ set -u
 
 EXPSTR='Found 664579 prime numbers.'
 RUN_TIME="${RUN_TIME:=90}" # CPU time seconds
+RUN_TRIES="${RUN_TRIES:=6}" # number of identical runs
+MIN_NLINES="${MIN_NLINES:=10}" # it's a fatal error if we get less than this number of output lines
 SRC_FILTER="${SRC_FILTER:=x}" # execute only given tests
+DRY_RUN="${DRY_RUN:=0}"
 
 echo "# Run time limited to $RUN_TIME CPU seconds"
 echo "#"
@@ -35,7 +38,11 @@ function run_benchmark() {
 	echo "# ... compilation"
 	$COMPILE_CMD || exit 1 # compilation failed
 
-	for n in {1..3}; do
+	for n in $(seq 1 "$RUN_TRIES"); do
+		if [ "$DRY_RUN" -ne 0 ]; then
+			continue
+		fi
+
 		echo "# ... run $n"
 
 		TIMES_FILE="$(mktemp --suffix .langs_perf)" || exit 1
@@ -64,7 +71,7 @@ function run_benchmark() {
 		fi
 
 		NLINES="$(echo "$OUT"|wc -l)"
-		if [ "$NLINES" -lt 10 ]; then
+		if [ "$NLINES" -lt "$MIN_NLINES" ]; then
 			echo "ERROR: Not enough successful loops: $NLINES" >&2
 			echo "$OUT" >&2
 			exit 1
@@ -97,7 +104,13 @@ C='pypy'      ; SRC='primes.py'  ; run_benchmark 'PyPy 2.7'   'true' "$C $SRC" "
 C='python2.7' ; SRC='primes.py'  ; run_benchmark 'Python 2.7' 'true' "$C $SRC" "$C -V" 'cat' "$SRC"
 C='python3.2' ; SRC='primes.py'  ; run_benchmark 'Python 3.2' 'true' "$C $SRC" "$C -V" 'cat' "$SRC"
 C='python3.5' ; SRC='primes.py'  ; run_benchmark 'Python 3.5' 'true' "$C $SRC" "$C -V" 'cat' "$SRC"
+
+##
+
 C='perl'      ; SRC='primes.pl'  ; run_benchmark 'Perl' 'true' "$C $SRC" "$C -v" 'grep built' "$SRC"
+
+##
+
 C='php5.6'    ; SRC='primes.php' ; run_benchmark 'PHP 5.6' 'true' "$C $SRC" "$C -v" 'head -n1' "$SRC"
 C='php7.0'    ; SRC='primes.php' ; run_benchmark 'PHP 7.0' 'true' "$C $SRC" "$C -v" 'head -n1' "$SRC"
 
