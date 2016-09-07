@@ -2,6 +2,8 @@
 #include <cmath>
 #include <vector>
 #include <algorithm>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
@@ -59,7 +61,10 @@ void get_primes7(int n, vector<int> &res) {
 }
 
 int main() {
-	while (1) {
+	std::time_t startTime = std::time(NULL);
+	std::time_t periodTime = (std::time_t) atoi(std::getenv("RUN_TIME"));
+
+	while ((std::time(NULL) - startTime) < periodTime) {
 		vector<int> res;
 		get_primes7(10000000, res);
 		printf("Found %d prime numbers.\n", (int)res.size());
