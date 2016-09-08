@@ -1,3 +1,5 @@
+require 'time'
+
 def get_primes7(n)
   return [] if n  < 2
   return [2] if n == 2
@@ -24,7 +26,10 @@ def get_primes7(n)
   [2] + s.compact
 end
 
-loop do
+startTime = Time.now.to_i
+periodTime = ENV['RUN_TIME'].to_i
+
+while (Time.now.to_i - startTime) < periodTime do
   res = get_primes7(10000000)
-	puts "Found #{res.length} prime numbers."
+  puts "Found #{res.length} prime numbers."
 end
