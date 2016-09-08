@@ -2,11 +2,11 @@
 set -u
 
 EXPSTR='Found 664579 prime numbers.'
-RUN_TIME="${RUN_TIME:=90}" # CPU time seconds
+RUN_TIME="${RUN_TIME:=90}" # wall-clock time seconds
 RUN_TRIES="${RUN_TRIES:=6}" # number of identical runs
 MIN_NLINES="${MIN_NLINES:=10}" # it's a fatal error if we get less than this number of output lines
-SRC_FILTER="${SRC_FILTER:=x}" # execute only given tests
-DRY_RUN="${DRY_RUN:=0}"
+SRC_FILTER="${SRC_FILTER:=x}" # if provided, execute only the given test
+DRY_RUN="${DRY_RUN:=0}" # if enabled, do only the compilation phase
 
 export RUN_TIME
 
