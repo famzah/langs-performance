@@ -4,83 +4,154 @@ use warnings;
 
 use Data::Dumper;
 
-sub parse_section {
+sub analyze_run_data {
+	my $test_name = shift;
 	my $data = shift;
+
 	my $i;
 	my $deviation;
 	my $cnt;
+	my $averages = {};
+	my $k;
+	my $avg;
 
-	$cnt = scalar @{$data->{'user'}};
-	if (scalar @{$data->{'user'}} != scalar @{$data->{'sys'}}) {
-		die("ERROR: User and System CPU measures do not match as a count: $cnt");
-	}
-
-	my $avg = 0;
-	for ($i = 0; $i < $cnt; ++$i) {
-		$data->{'total'}->[$i] = $data->{'user'}->[$i] + $data->{'sys'}->[$i];
-		$avg += $data->{'total'}->[$i];
-	}
-
-	$avg = $avg / $cnt;
-	$data->{'total_avg'} = $avg;
+	$cnt = scalar @{$data};
 
 	for ($i = 0; $i < $cnt; ++$i) {
-		$deviation = (($avg - $data->{'total'}->[$i]) / $avg) * 100;
-		if (abs($deviation) > 5) {
-			print Dumper($data)."\n";
-			die(sprintf(
-				"ERROR: Measurement deviations are too high: %.1f\n", $deviation
+		if ($data->[$i]->{'swaps'} != 0) {
+			# Did we run out of memory?
+			warn(sprintf(
+				"%s: run_try=%d: swaps is non-zero: %d\n",
+				$test_name, $i + 1, $data->[$i]->{'swaps'}
+			));
+		}
+		if ($data->[$i]->{'sys_t'} + $data->[$i]->{'user_t'} > $data->[$i]->{'real_t'}) {
+			warn(sprintf(
+				"%s: run_try=%d: CPU time (%.1f) is bigger than wall-clock time (%.1f); multi-threaded?\n",
+				$test_name, $i + 1,
+				$data->[$i]->{'sys_t'} + $data->[$i]->{'user_t'},
+				$data->[$i]->{'real_t'}
 			));
 		}
 	}
 
-	return $data;
+	foreach $k (qw/ real_t sys_t user_t cpu_t /) {
+		$averages->{$k} = 0;
+	}
+
+	for ($i = 0; $i < $cnt; ++$i) {
+		$data->[$i]->{'cpu_t'} = $data->[$i]->{'sys_t'} + $data->[$i]->{'user_t'};
+
+		$data->[$i]->{'per_10_lines'} = {};
+		foreach $k (qw/ real_t sys_t user_t cpu_t /) {
+			$data->[$i]->{'per_10_lines'}->{$k} = $data->[$i]->{$k} / $data->[$i]->{'nlines'} * 10;
+
+			# XXX: Average values for 10 lines of output.
+			# XXX: So that we can compare with the previous test method.
+			$averages->{$k} += $data->[$i]->{'per_10_lines'}->{$k};
+		}
+	}
+
+	foreach $k (qw/ real_t sys_t user_t cpu_t /) {
+		$averages->{$k} = $averages->{$k} / $cnt;
+	}
+
+	#print Dumper($data)."\n";
+	#print Dumper($averages)."\n";
+
+	for ($i = 0; $i < $cnt; ++$i) {
+		foreach $k (qw/ real_t cpu_t /) {
+			$avg = $averages->{$k};
+			$deviation = (($avg - $data->[$i]->{'per_10_lines'}->{$k}) / $avg) * 100;
+			if (abs($deviation) > 5) { # percents
+				warn(sprintf(
+					"%s: run_try=%d: Measurement deviations are too high for '%s': %.1f\n",
+					$test_name, $i + 1, $k, $deviation
+				));
+			}
+		}
+	}
+
+	return $averages;
 }
 
 sub main {
-	my $file = 'data.raw';
 	my $line;
-	my $data = undef;
-	my @final_data = ();
+	my $data = {};
+	my $averages;
+	my $k;
+	my $test_data;
+	my $test_name;
 
-	open(F, '<', $file) or die("open($file): $!");
-
-	while ($line = <F>) {
+	while ($line = <STDIN>) {
 		chomp($line);
-		if ($line =~ /^== (.+) ==$/) { # begin of a section
-			if (defined($data)) {
-				push(@final_data, parse_section($data));
+
+		if ($line =~ /^\s*#/) {
+			next;
+		}
+
+		if ($line !~ /^real_TIME:(\d+\.\d+)sec user_CPU:(\d+\.\d+)sec sys_CPU:(\d+\.\d+)sec max_RSS:(\d+)kb swaps:(\d+) ctx_sw:(\d+)\+(\d+) nlines:(\d+) run_try:(\d+)  header:'([^']+)' version:'([^']+)' src_file:(\S+)$/) {
+			die("Unable to parse line: $line\n");
+		}
+
+		my $row = {}; # new reference every time
+		my $run_try;
+		my $test_name;
+		$row->{'real_t'} = $1;
+		$row->{'user_t'} = $2;
+		$row->{'sys_t'} = $3;
+		$row->{'max_RSS'} = $4;
+		$row->{'swaps'} = $5;
+		$row->{'ctx_sw_unvol'} = $6;
+		$row->{'ctx_sw_vol'} = $7;
+		$row->{'nlines'} = $8;
+		$run_try = $9 - 1; # XXX: fix index
+		#
+		$test_name = $10;
+		$row->{'version'} = $11;
+		$row->{'src_file'} = $12;
+
+		# trim white-space
+		$row->{'version'} =~ s/^\s*//;
+		$row->{'version'} =~ s/\s*$//;
+
+		if (!exists($data->{$test_name})) {
+			$data->{$test_name} = {
+				'meta' => {},
+				'run_data' => [],
+			};
+			foreach $k (qw/ version src_file /) {
+				$data->{$test_name}->{'meta'}->{$k} = $row->{$k};
 			}
-			$data = {};
-			$data->{'label'} = $1;
-			$data->{'user'} = [];
-			$data->{'sys'} = [];
-			$data->{'version'} = [];
-			next;
 		}
-		if (!defined($data)) {
-			die("ERROR: The first section is not started, yet");
+
+		foreach $k (qw/ version src_file /) {
+			if ($data->{$test_name}->{'meta'}->{$k} ne $row->{$k}) {
+				die("Sanity check failed for meta: $line");
+			}
 		}
-		if ($line =~ /^\s*$/) {
-			next;
+
+		if (exists($data->{$test_name}->{'run_data'}->[$run_try])) {
+			die("Duplicate run#: $line");
 		}
-		if ($line =~ /^real\s+\d/) {
-			next;
+		delete($row->{'version'});
+		delete($row->{'src_file'});
+		$data->{$test_name}->{'run_data'}->[$run_try] = $row;
+		foreach $k (qw/ version src_file /) {
+			delete($data->{$test_name}->{'run_data'}->[$run_try]->{$k});
 		}
-		#                 $1         $2    $3     $4
-		if ($line =~ /^(user|sys)\s+(\d+)m(\d+)\.(\d+)s$/) {
-			push(@{$data->{$1}}, ($2 * 60 + $3 + $4/1000));
-			next;
-		}
-		push(@{$data->{'version'}}, $line);
 	}
 
-	@final_data = sort {
-		$a->{'total_avg'} <=> $b->{'total_avg'}
-	} @final_data;
-	print Dumper(@final_data);
+	while (($test_name, $test_data) = each %{$data}) {
+		$averages = analyze_run_data($test_name, $test_data->{'run_data'});
+		printf(
+			"%-30s: user_t=%.3f sys_t=%.3f cpu_t=%.3f\n",
+			$test_name,
+			$averages->{'user_t'},
+			$averages->{'sys_t'},
+			$averages->{'cpu_t'}
+		);
+	}
 }
-
-die("Work in progress. This has not been completed nor tested");
 
 main();
