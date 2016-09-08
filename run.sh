@@ -8,8 +8,11 @@ MIN_NLINES="${MIN_NLINES:=10}" # it's a fatal error if we get less than this num
 SRC_FILTER="${SRC_FILTER:=x}" # execute only given tests
 DRY_RUN="${DRY_RUN:=0}"
 
-echo "# Run time limited to $RUN_TIME CPU seconds"
+export RUN_TIME
+
+echo "# Run time limited to $RUN_TIME wall-clock seconds"
 echo "#"
+# Note: This increases the memory usage but should still provide linear performance.
 
 function run_benchmark() {
 	HEADER="$1"
@@ -47,17 +50,11 @@ function run_benchmark() {
 
 		TIMES_FILE="$(mktemp --suffix .langs_perf)" || exit 1
 
-		# Limit the total CPU time by using "ulimit".
-		# Note: This increases the memory usage but should still provide linear performance.
-
-		# Force unbuffered output by using "stdbuf" or else we lose the output on SIGKILL.
-
 		OUT="$(
 		{
-			ulimit -t "$RUN_TIME" || exit 1
 			/usr/bin/time -o "$TIMES_FILE" --format \
 				'real_TIME:%esec user_CPU:%Usec sys_CPU:%Ssec max_RSS:%Mkb swaps:%W ctx_sw:%c+%w' \
-				stdbuf -o0 -e0 $RUN_CMD
+				$RUN_CMD
 		} 2>&1
 		)"
 
