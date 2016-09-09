@@ -75,8 +75,27 @@ sub analyze_run_data {
 	return $averages;
 }
 
-sub print_results_as_text {
-	my @sorted_all = @_;
+sub _print_results_as_text {
+	my $test_name = shift;
+	my $averages = shift;
+	my @slower = @{ $_[0] }; shift;
+	my $test_data = shift;
+
+	printf(
+		"%-30s: user_t=%6.3f sys_t=%6.3f cpu_t=%6.3f to_CPP=%5s to_prev=%5s version=%s\n",
+		$test_name,
+		$averages->{'user_t'},
+		$averages->{'sys_t'},
+		$averages->{'cpu_t'},
+		$slower[0],
+		$slower[1],
+		$test_data->{'meta'}->{'version'}
+	);
+}
+
+sub print_results {
+	my $output = shift;
+	my @sorted_all = @{ $_[0] }; shift;
 	my $test_data;
 	my $test_name;
 	my $averages;
@@ -84,6 +103,7 @@ sub print_results_as_text {
 	my $idx = -1;
 	my ($sl_idx, $src_idx);
 	my $ratio;
+	my @args;
 
 	foreach (@sorted_all) {
 		$test_name = $_->{'test_name'};
@@ -111,16 +131,12 @@ sub print_results_as_text {
 			}
 		}
 
-		printf(
-			"%-30s: user_t=%6.3f sys_t=%6.3f cpu_t=%6.3f to_CPP=%5s to_prev=%5s version=%s\n",
-			$test_name,
-			$averages->{'user_t'},
-			$averages->{'sys_t'},
-			$averages->{'cpu_t'},
-			$slower[0],
-			$slower[1],
-			$test_data->{'meta'}->{'version'}
-		);
+		@args = ($test_name, $averages, \@slower, $test_data);
+		if ($output eq 'text') {
+			_print_results_as_text(@args);
+		} else {
+			die("Unknown output: $output");
+		}
 	}
 }
 
@@ -206,7 +222,7 @@ sub main {
 		$a->{'averages'}->{'cpu_t'} <=> $b->{'averages'}->{'cpu_t'};
 	} @sorted_all;
 
-	print_results_as_text(@sorted_all);
+	print_results('text', \@sorted_all);
 }
 
 main();
