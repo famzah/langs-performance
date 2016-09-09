@@ -75,6 +75,55 @@ sub analyze_run_data {
 	return $averages;
 }
 
+sub print_results_as_text {
+	my @sorted_all = @_;
+	my $test_data;
+	my $test_name;
+	my $averages;
+	my @slower = ();
+	my $idx = -1;
+	my ($sl_idx, $src_idx);
+	my $ratio;
+
+	foreach (@sorted_all) {
+		$test_name = $_->{'test_name'};
+		$test_data = $_->{'test_data'};
+		$averages = $_->{'averages'};
+		++$idx;
+
+		#print Dumper($test_data->{'run_data'})."\n";
+		#print Dumper($averages)."\n";
+
+		if ($idx == 0) {
+			$slower[0] = '-';
+			$slower[1] = '-';
+		} else {
+			foreach $sl_idx (0,1) {
+				if ($sl_idx == 0) {
+					$src_idx = 0;
+				} else {
+					$src_idx = $idx - 1;
+				}
+
+				$ratio = $averages->{'cpu_t'} / $sorted_all[$src_idx]->{'averages'}->{'cpu_t'};
+
+				$slower[$sl_idx] = sprintf('%d%%', ($ratio - 1.00) * 100);
+			}
+		}
+
+		printf(
+			"%-30s: user_t=%6.3f sys_t=%6.3f cpu_t=%6.3f to_CPP=%5s to_prev=%5s version=%s\n",
+			$test_name,
+			$averages->{'user_t'},
+			$averages->{'sys_t'},
+			$averages->{'cpu_t'},
+			$slower[0],
+			$slower[1],
+			$test_data->{'meta'}->{'version'}
+		);
+	}
+}
+
 sub main {
 	my $line;
 	my $data = {};
@@ -82,6 +131,7 @@ sub main {
 	my $k;
 	my $test_data;
 	my $test_name;
+	my @sorted_all = ();
 
 	while ($line = <STDIN>) {
 		chomp($line);
@@ -144,14 +194,19 @@ sub main {
 
 	while (($test_name, $test_data) = each %{$data}) {
 		$averages = analyze_run_data($test_name, $test_data->{'run_data'});
-		printf(
-			"%-30s: user_t=%.3f sys_t=%.3f cpu_t=%.3f\n",
-			$test_name,
-			$averages->{'user_t'},
-			$averages->{'sys_t'},
-			$averages->{'cpu_t'}
-		);
+		push(@sorted_all,
+		{
+			'test_name' => $test_name,
+			'test_data' => $test_data,
+			'averages' => $averages,
+		});
 	}
+
+	@sorted_all = sort {
+		$a->{'averages'}->{'cpu_t'} <=> $b->{'averages'}->{'cpu_t'};
+	} @sorted_all;
+
+	print_results_as_text(@sorted_all);
 }
 
 main();
