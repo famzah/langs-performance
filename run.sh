@@ -91,13 +91,13 @@ rm -f ./primes.cpp.out
 
 ##
 
-C='go' ; SRC='primes.go'   ; run_benchmark 'Go (not optimized)' \
+C='go' ; SRC='primes.go'   ; run_benchmark 'Go' \
 	"$C build $SRC" './primes' "$C version" 'cat' "$SRC"
 go clean
 
 ##
 
-C='pypy'      ; SRC='primes.py'  ; run_benchmark 'PyPy 2.7'   'true' "$C $SRC" "$C -V" 'cat' "$SRC"
+C='pypy'      ; SRC='primes.py'  ; run_benchmark 'Python 2.7 + PyPy' 'true' "$C $SRC" "$C -V" 'cat' "$SRC"
 C='python2.7' ; SRC='primes.py'  ; run_benchmark 'Python 2.7' 'true' "$C $SRC" "$C -V" 'cat' "$SRC"
 C='python3.2' ; SRC='primes.py'  ; run_benchmark 'Python 3.2' 'true' "$C $SRC" "$C -V" 'cat' "$SRC"
 C='python3.5' ; SRC='primes.py'  ; run_benchmark 'Python 3.5' 'true' "$C $SRC" "$C -V" 'cat' "$SRC"
@@ -117,11 +117,11 @@ JF1='PrimeNumbersBenchmarkApp'
 JF2='PrimeNumbersGenerator'
 JF3='IntList'
 
-C='javac' ; SRC='primes.java'     ; run_benchmark 'Java (std)' \
+C='javac' ; SRC='primes.java'     ; run_benchmark 'Java 8' \
 	"$C $SRC" "java $JF1" "$C -version" 'cat' "$SRC"
 rm -f ${JF1}.class ${JF2}.class
 
-C='javac' ; SRC='primes-alt.java' ; run_benchmark 'Java (non-std)' \
+C='javac' ; SRC='primes-alt.java' ; run_benchmark 'Java 8 (non-std lib)' \
 	"$C $SRC" "java $JF1" "$C -version" 'cat' "$SRC"
 rm -f ${JF1}.class ${JF2}.class ${JF3}.class
 
