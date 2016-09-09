@@ -228,6 +228,23 @@ sub print_results {
 	}
 }
 
+sub usage {
+	die("Usage: $0 [text|html]\nRead results at STDIN and format them as specified.\n");
+}
+
+sub parse_ARGV {
+	my $output_mode = shift @ARGV;
+
+	if (!defined($output_mode)) {
+		usage();
+	}
+	if ($output_mode !~ /^(text|html)$/) {
+		usage();
+	}
+
+	return $output_mode;
+}
+
 sub main {
 	my $line;
 	my $data = {};
@@ -236,6 +253,9 @@ sub main {
 	my $test_data;
 	my $test_name;
 	my @sorted_all = ();
+	my $output_mode;
+
+	$output_mode = parse_ARGV();
 
 	while ($line = <STDIN>) {
 		chomp($line);
@@ -310,10 +330,13 @@ sub main {
 		$a->{'averages'}->{'cpu_t'} <=> $b->{'averages'}->{'cpu_t'};
 	} @sorted_all;
 
-	#print_results('text', \@sorted_all);
-	_print_results_as_html_header();
-	print_results('html', \@sorted_all);
-	_print_results_as_html_footer();
+	if ($output_mode eq 'html') {
+		_print_results_as_html_header();
+	}
+	print_results($output_mode, \@sorted_all);
+	if ($output_mode eq 'html') {
+		_print_results_as_html_footer();
+	}
 }
 
 main();
