@@ -75,6 +75,92 @@ sub analyze_run_data {
 	return $averages;
 }
 
+sub _print_results_as_html_header {
+	print <<'EOF'
+<table border="1" style="border-collapse:collapse;" cellpadding="4">
+<thead>
+<tr>
+<th rowspan="2" align="center">Language</th>
+<th colspan="3" align="center">CPU time</th>
+<th colspan="2" align="center">Slower than</th>
+<th rowspan="2" align="center">Language<br>version</th>
+<th rowspan="2" align="center">Source<br>code</th>
+</tr>
+<tr>
+<th align="center">User</th>
+<th align="center">System</th>
+<th align="center">Total</th>
+<th align="center">C++</th>
+<th align="center">previous</th>
+</tr>
+</thead>
+<tbody>
+EOF
+}
+
+sub _print_results_as_html_footer {
+	print <<'EOF'
+</tbody>
+</table>
+EOF
+}
+
+sub _print_results_as_html_template {
+	return <<'EOF'
+<tr>
+<td>%s</td>
+<td align="right">%.3f</td>
+<td align="right">%.3f</td>
+<td align="right">%.3f</td>
+<td align="center">%s</td>
+<td align="center">%s</td>
+<td align="right">%s</td>
+<td align="center"><a href="https://github.com/famzah/langs-performance/blob/master/%s">link</a></td>
+</tr>
+EOF
+}
+
+sub _print_results_as_html_enrich_test_name {
+	my $test_name = shift;
+
+	if ($test_name eq 'C++ (optimized with -O2)') {
+		return 'C++ <em>(<a href="http://gcc.gnu.org/onlinedocs/gcc-4.4.4/gcc/Optimize-Options.html#Optimize-Options">optimized with -O2</a>)</em>';
+	}
+	if ($test_name =~ /^Java (\d) \(non-std lib\)$/) {
+		return '<font color="#D1D0CE">Java '.$1.' <em>(<a href="/2010/07/01/cpp-vs-python-vs-perl-vs-php-performance-benchmark/#comment-4084">non-std lib</a>)</em></font>';
+	}
+	if ($test_name =~ /^Python (\d\.\d) \+ PyPy$/) {
+		return '<font color="#D1D0CE">Python '.$1.' + PyPy</font>';
+	}
+	if ($test_name eq 'JavaScript (nodejs)') {
+		return 'Javascript (<a href="http://nodejs.org/">nodejs</a>)';
+	}
+	if ($test_name eq 'C++ (not optimized)') {
+		return '<font color="#D1D0CE">C++ <em>(not optimized)</em></font>';
+	}
+
+	return $test_name;
+}
+
+sub _print_results_as_html {
+	my $test_name = shift;
+	my $averages = shift;
+	my @slower = @{ $_[0] }; shift;
+	my $test_data = shift;
+
+	printf(
+		_print_results_as_html_template(),
+		_print_results_as_html_enrich_test_name($test_name),
+		$averages->{'user_t'},
+		$averages->{'sys_t'},
+		$averages->{'cpu_t'},
+		$slower[0],
+		$slower[1],
+		$test_data->{'meta'}->{'version'},
+		$test_data->{'meta'}->{'src_file'}
+	);
+}
+
 sub _print_results_as_text {
 	my $test_name = shift;
 	my $averages = shift;
@@ -134,6 +220,8 @@ sub print_results {
 		@args = ($test_name, $averages, \@slower, $test_data);
 		if ($output eq 'text') {
 			_print_results_as_text(@args);
+		} elsif ($output eq 'html') {
+			_print_results_as_html(@args);
 		} else {
 			die("Unknown output: $output");
 		}
@@ -222,7 +310,10 @@ sub main {
 		$a->{'averages'}->{'cpu_t'} <=> $b->{'averages'}->{'cpu_t'};
 	} @sorted_all;
 
-	print_results('text', \@sorted_all);
+	#print_results('text', \@sorted_all);
+	_print_results_as_html_header();
+	print_results('html', \@sorted_all);
+	_print_results_as_html_footer();
 }
 
 main();
