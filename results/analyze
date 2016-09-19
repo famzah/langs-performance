@@ -126,6 +126,9 @@ sub _print_results_as_html_enrich_test_name {
 	if ($test_name eq 'C++ (optimized with -O2)') {
 		return 'C++ <em>(<a href="http://gcc.gnu.org/onlinedocs/gcc-4.4.4/gcc/Optimize-Options.html#Optimize-Options">optimized with -O2</a>)</em>';
 	}
+	if ($test_name =~ /^Java (\d)$/) {
+		return 'Java '.$1.' (<a href="https://github.com/famzah/langs-performance/tree/master/java-optimizations">see notes</a>)';
+	}
 	if ($test_name =~ /^Java (\d) \(non-std lib\)$/) {
 		return '<font color="#D1D0CE">Java '.$1.' <em>(<a href="/2010/07/01/cpp-vs-python-vs-perl-vs-php-performance-benchmark/#comment-4084">non-std lib</a>)</em></font>';
 	}
