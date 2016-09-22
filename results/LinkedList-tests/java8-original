@@ -1,0 +1,16 @@
+# Run time limited to 90 wall-clock seconds
+#
+# Java 8
+# ... compilation
+# ... run 1
+real_TIME:90.44sec user_CPU:124.97sec sys_CPU:1.61sec max_RSS:513288kb swaps:0 ctx_sw:3477+5036 nlines:69 run_try:1  header:'Java 8' version:'javac 1.8.0_102 ' src_file:primes.java
+# ... run 2
+real_TIME:90.40sec user_CPU:126.78sec sys_CPU:0.81sec max_RSS:513016kb swaps:0 ctx_sw:3417+4681 nlines:71 run_try:2  header:'Java 8' version:'javac 1.8.0_102 ' src_file:primes.java
+# ... run 3
+real_TIME:91.48sec user_CPU:128.19sec sys_CPU:0.86sec max_RSS:513284kb swaps:0 ctx_sw:3167+4779 nlines:72 run_try:3  header:'Java 8' version:'javac 1.8.0_102 ' src_file:primes.java
+# ... run 4
+real_TIME:90.71sec user_CPU:127.14sec sys_CPU:0.94sec max_RSS:513256kb swaps:0 ctx_sw:3265+4928 nlines:70 run_try:4  header:'Java 8' version:'javac 1.8.0_102 ' src_file:primes.java
+# ... run 5
+real_TIME:91.38sec user_CPU:128.82sec sys_CPU:0.96sec max_RSS:513440kb swaps:0 ctx_sw:3134+4988 nlines:69 run_try:5  header:'Java 8' version:'javac 1.8.0_102 ' src_file:primes.java
+# ... run 6
+real_TIME:91.93sec user_CPU:128.10sec sys_CPU:1.01sec max_RSS:513260kb swaps:0 ctx_sw:3478+5307 nlines:69 run_try:6  header:'Java 8' version:'javac 1.8.0_102 ' src_file:primes.java
