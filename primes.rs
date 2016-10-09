@@ -10,7 +10,7 @@ fn get_primes7(count: u32) -> Vec<u32> {
         return vec![2];
     }
 
-    let mut s = Vec::with_capacity(count as usize / 2);
+    let mut s = Vec::new();
     let mut i = 3;
     while i < count+1 {
         s.push(i);
@@ -36,11 +36,6 @@ fn get_primes7(count: u32) -> Vec<u32> {
         m = 2*i+3;
     }
 
-    //s.push(2);
-    //s.retain(|&x| x != 0);
-    //s
-
-    //let mut res = Vec::with_capacity(count as usize /2);
     let mut res = Vec::new();
     res.push(2);
     res.extend(s.into_iter().filter(|x| *x != 0));
@@ -64,5 +59,4 @@ fn main() {
         println!("Found {} prime numbers.", primes.len());
     }
 }
-
 
