@@ -1,0 +1,16 @@
+# Run time limited to 90 wall-clock seconds
+#
+# Java 7
+# ... compilation
+# ... run 1
+real_TIME:90.44sec user_CPU:122.52sec sys_CPU:1.16sec max_RSS:780688kb swaps:0 ctx_sw:5534+5500 nlines:248 run_try:1  header:'Java 7' version:'javac 1.7.0_111 ' src_file:primes.java
+# ... run 2
+real_TIME:90.32sec user_CPU:123.95sec sys_CPU:0.51sec max_RSS:776000kb swaps:0 ctx_sw:6132+5794 nlines:238 run_try:2  header:'Java 7' version:'javac 1.7.0_111 ' src_file:primes.java
+# ... run 3
+real_TIME:90.29sec user_CPU:123.78sec sys_CPU:0.56sec max_RSS:794788kb swaps:0 ctx_sw:4891+5050 nlines:237 run_try:3  header:'Java 7' version:'javac 1.7.0_111 ' src_file:primes.java
+# ... run 4
+real_TIME:90.37sec user_CPU:122.49sec sys_CPU:0.43sec max_RSS:777092kb swaps:0 ctx_sw:5745+5244 nlines:250 run_try:4  header:'Java 7' version:'javac 1.7.0_111 ' src_file:primes.java
+# ... run 5
+real_TIME:90.62sec user_CPU:124.88sec sys_CPU:0.43sec max_RSS:787036kb swaps:0 ctx_sw:6079+5284 nlines:238 run_try:5  header:'Java 7' version:'javac 1.7.0_111 ' src_file:primes.java
+# ... run 6
+real_TIME:90.25sec user_CPU:120.78sec sys_CPU:0.74sec max_RSS:807584kb swaps:0 ctx_sw:8699+5378 nlines:235 run_try:6  header:'Java 7' version:'javac 1.7.0_111 ' src_file:primes.java

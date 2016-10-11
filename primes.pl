@@ -35,8 +35,12 @@ sub get_primes7($) {
 	return @res;
 }
 
+my $startTime = time();
+my $periodTime = $ENV{'RUN_TIME'};
+
 my @res;
-for (1..10) {
+
+while ((time() - $startTime) < $periodTime) {
 	@res = get_primes7(10000000);
 	print "Found ".(scalar @res)." prime numbers.\n";
 }

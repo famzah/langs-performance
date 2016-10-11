@@ -34,7 +34,10 @@ function get_primes7(n) {
 	return res;
 }
 
-for (var i = 0; i < 10; i++) {
+var startTime = Date.now();
+var periodTime = parseInt(process.env.RUN_TIME, 10) * 1000
+
+while ((Date.now() - startTime) < periodTime) {
 	var res = get_primes7(10000000);
 	console.log("Found " + res.length + " prime numbers.");
 }

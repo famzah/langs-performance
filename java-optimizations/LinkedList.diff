@@ -1,0 +1,30 @@
+--- ../primes.java	2016-09-22 22:10:58.787516331 +0300
++++ primes.java	2016-09-22 22:11:14.919516331 +0300
+@@ -2,15 +2,15 @@
+ import java.lang.Math;
+ 
+ class PrimeNumbersGenerator {
+-	ArrayList<Integer> get_primes7(int n) {
+-		ArrayList<Integer> res = new ArrayList<Integer>();
++    List<Integer> get_primes7(int n) {
++        List<Integer> res = new LinkedList<Integer>();
+ 
+ 		if (n < 2) return res;
+ 		if (n == 2) {
+ 			res.add(2);
+ 			return res;
+ 		}
+-		ArrayList<Integer> s = new ArrayList<Integer>();
++        List<Integer> s = new ArrayList<Integer>();
+ 		for (int i = 3; i < n + 1; i += 2) {
+ 			s.add(i);
+ 		}
+@@ -46,7 +46,7 @@
+ 		long startTime = System.currentTimeMillis();
+ 		long periodTime = Long.parseLong(System.getenv("RUN_TIME"), 10) * 1000;
+ 
+-		ArrayList<Integer> res;
++        List<Integer> res;
+ 
+ 		while ((System.currentTimeMillis() - startTime) < periodTime) {
+ 			res = (new PrimeNumbersGenerator()).get_primes7(10000000);

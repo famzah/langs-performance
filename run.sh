@@ -1,50 +1,136 @@
 #!/bin/bash
+set -u
 
 EXPSTR='Found 664579 prime numbers.'
+RUN_TIME="${RUN_TIME:=90}" # wall-clock time seconds
+RUN_TRIES="${RUN_TRIES:=6}" # number of identical runs
+MIN_NLINES="${MIN_NLINES:=10}" # it's a fatal error if we get less than this number of output lines
+SRC_FILTER="${SRC_FILTER:=x}" # if provided, execute only the given test
+DRY_RUN="${DRY_RUN:=0}" # if enabled, do only the compilation phase
+
+export RUN_TIME
+
+echo "# Run time limited to $RUN_TIME wall-clock seconds"
+echo "#"
+# Note: This increases the memory usage but should still provide linear performance.
 
 function run_benchmark() {
 	HEADER="$1"
-	CMD1="$2"
-	CMD2="$3"
+	COMPILE_CMD="$2"
+	RUN_CMD="$3"
 	VERSION_CMD="$4"
 	VERSION_FILTER_CMD="$5"
+	SRC_FILE="$6"
+
+	if [ "$SRC_FILTER" != 'x' ]; then
+		if [ "$SRC_FILE" != "$SRC_FILTER" ]; then
+			return
+		fi
+	fi
 
 	$VERSION_CMD >/dev/null 2>&1
 	if [ "$?" == 127 ]; then # "command not found"
+		echo "SKIPPING: $HEADER / $VERSION_CMD" >&2
 		return # skip non-existing interpreter
 	fi
 
-	echo "== $HEADER =="
-	for n in {1..2}; do
-		$CMD1 && OUT=$(time $CMD2)
+	VERSION_OUT="$( $VERSION_CMD 2>&1 | $VERSION_FILTER_CMD | tr '\n' ' ' )"
 
-		echo "$OUT" | grep -xv "$EXPSTR" # check that all scripts output the same lines
+	echo "# $HEADER"
 
-		NLINES=$(echo "$OUT"|wc -l)
-		[ "$NLINES" == '10' ] || echo "Unexpected loops count: $NLINES"
+	echo "# ... compilation"
+	$COMPILE_CMD || exit 1 # compilation failed
+
+	for n in $(seq 1 "$RUN_TRIES"); do
+		if [ "$DRY_RUN" -ne 0 ]; then
+			continue
+		fi
+
+		echo "# ... run $n"
+
+		TIMES_FILE="$(mktemp --suffix .langs_perf)" || exit 1
+
+		OUT="$(
+		{
+			/usr/bin/time -o "$TIMES_FILE" --format \
+				'real_TIME:%esec user_CPU:%Usec sys_CPU:%Ssec max_RSS:%Mkb swaps:%W ctx_sw:%c+%w' \
+				$RUN_CMD
+		} 2>&1
+		)"
+
+		TIMES_OUT="$(cat "$TIMES_FILE" | grep -vx 'Command terminated by signal 9')"
+		rm "$TIMES_FILE"
+
+		# check that all scripts output the same lines
+		if [ "$(echo "$OUT" | grep -xv "$EXPSTR")" != '' ]; then
+			echo "ERROR: Unexpected output: $OUT" >&2
+			exit 1
+		fi
+
+		NLINES="$(echo "$OUT"|wc -l)"
+		if [ "$NLINES" -lt "$MIN_NLINES" ]; then
+			echo "ERROR: Not enough successful loops: $NLINES" >&2
+			echo "$OUT" >&2
+			exit 1
+		fi
+
+		echo "$TIMES_OUT nlines:$NLINES run_try:$n "\
+			"header:'$HEADER' version:'$VERSION_OUT' src_file:$SRC_FILE"
 	done
-	echo
-
-	$VERSION_CMD | $VERSION_FILTER_CMD
-	echo
 }
 
-C='g++'		; run_benchmark 'C++ (optimized with -O2)' "$C -Wall -O2 primes.cpp -o primes.cpp.out" './primes.cpp.out' "$C --version" 'head -n1'
+##
+
+C='g++' ; SRC='primes.cpp' ; run_benchmark 'C++ (optimized with -O2)' \
+	"$C -Wall -O2 $SRC -o primes.cpp.out" './primes.cpp.out' "$C --version" 'head -n1' "$SRC"
 rm -f ./primes.cpp.out
-C='g++'		; run_benchmark 'C++ (not optimized)' "$C -Wall primes.cpp -o primes.cpp.out" './primes.cpp.out' "$C --version" 'head -n1'
+
+C='g++' ; SRC='primes.cpp' ; run_benchmark 'C++ (not optimized)' \
+	"$C -Wall     $SRC -o primes.cpp.out" './primes.cpp.out' "$C --version" 'head -n1' "$SRC"
 rm -f ./primes.cpp.out
-C='go'	; run_benchmark 'Go (not optimized, default compiler)' "$C build primes.go" './primes' "$C version" 'cat'
+
+##
+
+C='go' ; SRC='primes.go'   ; run_benchmark 'Go' \
+	"$C build $SRC" './primes' "$C version" 'cat' "$SRC"
 go clean
-C='pypy'	; run_benchmark 'PyPy 2.7' 'true' "$C ./primes.py" "$C -V" 'cat'
-C='python2.7'	; run_benchmark 'Python 2.7' 'true' "$C ./primes.py" "$C -V" 'cat'
-C='python3.2'	; run_benchmark 'Python 3.2' 'true' "$C ./primes.py" "$C -V" 'cat'
-C='python3.5'	; run_benchmark 'Python 3.5' 'true' "$C ./primes.py" "$C -V" 'cat'
-C='perl'	; run_benchmark 'Perl' 'true' "$C ./primes.pl" "$C -v" 'grep built'
-C='php5.6'	; run_benchmark 'PHP 5.6' 'true' "$C ./primes.php" "$C -v" 'head -n1'
-C='php7.0'	; run_benchmark 'PHP 7.0' 'true' "$C ./primes.php" "$C -v" 'head -n1'
-C='javac'	; run_benchmark 'Java (std)' "$C primes.java" 'java PrimeNumbersBenchmarkApp' "$C -version" 'cat'
-rm -f PrimeNumbersBenchmarkApp.class PrimeNumbersGenerator.class
-C='javac'	; run_benchmark 'Java (non-std)' "$C primes-non-std-lib.java" 'java PrimeNumbersBenchmarkApp' "$C -version" 'cat'
-rm -f PrimeNumbersBenchmarkApp.class PrimeNumbersGenerator.class IntList.class
-C='node'	; run_benchmark 'JavaScript (nodejs)' 'true' "$C ./primes.js" "$C -v" 'cat'
-C='nodejs'	; run_benchmark 'JavaScript (nodejs)' 'true' "$C ./primes.js" "$C -v" 'cat'
+
+##
+
+C='pypy'      ; SRC='primes.py'  ; run_benchmark 'Python 2.7 + PyPy' 'true' "$C $SRC" "$C -V" 'cat' "$SRC"
+C='python2.7' ; SRC='primes.py'  ; run_benchmark 'Python 2.7' 'true' "$C $SRC" "$C -V" 'cat' "$SRC"
+C='python3.2' ; SRC='primes.py'  ; run_benchmark 'Python 3.2' 'true' "$C $SRC" "$C -V" 'cat' "$SRC"
+C='python3.5' ; SRC='primes.py'  ; run_benchmark 'Python 3.5' 'true' "$C $SRC" "$C -V" 'cat' "$SRC"
+
+##
+
+C='perl'      ; SRC='primes.pl'  ; run_benchmark 'Perl' 'true' "$C $SRC" "$C -v" 'grep built' "$SRC"
+
+##
+
+C='php5.6'    ; SRC='primes.php' ; run_benchmark 'PHP 5.6' 'true' "$C $SRC" "$C -v" 'head -n1' "$SRC"
+C='php7.0'    ; SRC='primes.php' ; run_benchmark 'PHP 7.0' 'true' "$C $SRC" "$C -v" 'head -n1' "$SRC"
+
+##
+
+JF1='PrimeNumbersBenchmarkApp'
+JF2='PrimeNumbersGenerator'
+JF3='IntList'
+
+C='javac' ; SRC='primes.java'     ; run_benchmark 'Java 8' \
+	"$C $SRC" "java $JF1" "$C -version" 'cat' "$SRC"
+rm -f ${JF1}.class ${JF2}.class
+
+C='javac' ; SRC='primes-alt.java' ; run_benchmark 'Java 8 (non-std lib)' \
+	"$C $SRC" "java $JF1" "$C -version" 'cat' "$SRC"
+rm -f ${JF1}.class ${JF2}.class ${JF3}.class
+
+##
+
+# Node.js has two different binary names; try both of them
+C='node'   ; SRC='primes.js' ; run_benchmark 'JavaScript (nodejs)' 'true' "$C $SRC" "$C -v" 'cat' "$SRC"
+C='nodejs' ; SRC='primes.js' ; run_benchmark 'JavaScript (nodejs)' 'true' "$C $SRC" "$C -v" 'cat' "$SRC"
+
+##
+
+C='ruby' ; SRC='primes.rb' ; run_benchmark 'Ruby' 'true' "$C $SRC" "$C -v" 'cat' "$SRC"

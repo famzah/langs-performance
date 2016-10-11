@@ -31,8 +31,12 @@ function get_primes7($n) {
 	return $res;
 }
 
+$startTime = time();
+$periodTime = getenv('RUN_TIME');
+
 $res = array();
-for ($i = 1; $i <= 10; ++$i) {
+
+while ((time() - $startTime) < $periodTime) {
 	$res = get_primes7(10000000);
 	print "Found ".count($res)." prime numbers.\n";
 }

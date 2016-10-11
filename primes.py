@@ -1,4 +1,6 @@
 import sys
+import time
+import os
 
 def get_primes7(n):
 	"""
@@ -28,6 +30,9 @@ def get_primes7(n):
 		m = 2*i+3
 	return [2]+[x for x in s if x]
 
-for t in range(10):
+startTime = int(time.time())
+periodTime = int(os.environ['RUN_TIME'])
+
+while (int(time.time()) - startTime) < periodTime:
 	res = get_primes7(10000000)
 	print("Found {} prime numbers.".format(len(res)))

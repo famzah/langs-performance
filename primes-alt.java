@@ -85,8 +85,12 @@ class IntList {
 
 class PrimeNumbersBenchmarkApp {
 	public static void main(String[] args) {
+		long startTime = System.currentTimeMillis();
+		long periodTime = Long.parseLong(System.getenv("RUN_TIME"), 10) * 1000;
+
 		IntList res;
-		for (int i = 1; i <= 10; ++i) {
+
+		while ((System.currentTimeMillis() - startTime) < periodTime) {
 			res = (new PrimeNumbersGenerator()).get_primes7(10000000);
 			System.out.format("Found %d prime numbers.\n", res.size());
 		}

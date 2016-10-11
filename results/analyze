@@ -1,0 +1,345 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+use Data::Dumper;
+
+sub analyze_run_data {
+	my $test_name = shift;
+	my $data = shift;
+
+	my $i;
+	my $deviation;
+	my $cnt;
+	my $averages = {};
+	my $k;
+	my $avg;
+
+	$cnt = scalar @{$data};
+
+	for ($i = 0; $i < $cnt; ++$i) {
+		if ($data->[$i]->{'swaps'} != 0) {
+			# Did we run out of memory?
+			warn(sprintf(
+				"%s: run_try=%d: swaps is non-zero: %d\n",
+				$test_name, $i + 1, $data->[$i]->{'swaps'}
+			));
+		}
+		if ($data->[$i]->{'sys_t'} + $data->[$i]->{'user_t'} > $data->[$i]->{'real_t'}) {
+			warn(sprintf(
+				"%s: run_try=%d: CPU time (%.1f) is bigger than wall-clock time (%.1f); multi-threaded?\n",
+				$test_name, $i + 1,
+				$data->[$i]->{'sys_t'} + $data->[$i]->{'user_t'},
+				$data->[$i]->{'real_t'}
+			));
+		}
+	}
+
+	foreach $k (qw/ real_t sys_t user_t cpu_t /) {
+		$averages->{$k} = 0;
+	}
+
+	for ($i = 0; $i < $cnt; ++$i) {
+		$data->[$i]->{'cpu_t'} = $data->[$i]->{'sys_t'} + $data->[$i]->{'user_t'};
+
+		$data->[$i]->{'per_10_lines'} = {};
+		foreach $k (qw/ real_t sys_t user_t cpu_t /) {
+			$data->[$i]->{'per_10_lines'}->{$k} = $data->[$i]->{$k} / $data->[$i]->{'nlines'} * 10;
+
+			# XXX: Average values for 10 lines of output.
+			# XXX: So that we can compare with the previous test method.
+			$averages->{$k} += $data->[$i]->{'per_10_lines'}->{$k};
+		}
+	}
+
+	foreach $k (qw/ real_t sys_t user_t cpu_t /) {
+		$averages->{$k} = $averages->{$k} / $cnt;
+	}
+
+	#print Dumper($data)."\n";
+	#print Dumper($averages)."\n";
+
+	for ($i = 0; $i < $cnt; ++$i) {
+		foreach $k (qw/ real_t cpu_t /) {
+			$avg = $averages->{$k};
+			$deviation = (($avg - $data->[$i]->{'per_10_lines'}->{$k}) / $avg) * 100;
+			if (abs($deviation) > 5) { # percents
+				warn(sprintf(
+					"%s: run_try=%d: Measurement deviations are too high for '%s': %.1f\n",
+					$test_name, $i + 1, $k, $deviation
+				));
+			}
+		}
+	}
+
+	return $averages;
+}
+
+sub _print_results_as_html_header {
+	print <<'EOF'
+<table border="1" style="border-collapse:collapse;" cellpadding="4">
+<thead>
+<tr>
+<th rowspan="2" align="center">Language</th>
+<th colspan="3" align="center">CPU time</th>
+<th colspan="2" align="center">Slower than</th>
+<th rowspan="2" align="center">Language<br>version</th>
+<th rowspan="2" align="center">Source<br>code</th>
+</tr>
+<tr>
+<th align="center">User</th>
+<th align="center">System</th>
+<th align="center">Total</th>
+<th align="center">C++</th>
+<th align="center">previous</th>
+</tr>
+</thead>
+<tbody>
+EOF
+}
+
+sub _print_results_as_html_footer {
+	print <<'EOF'
+</tbody>
+</table>
+EOF
+}
+
+sub _print_results_as_html_template {
+	return <<'EOF'
+<tr>
+<td>%s</td>
+<td align="right">%.3f</td>
+<td align="right">%.3f</td>
+<td align="right">%.3f</td>
+<td align="center">%s</td>
+<td align="center">%s</td>
+<td align="right">%s</td>
+<td align="center"><a href="https://github.com/famzah/langs-performance/blob/master/%s">link</a></td>
+</tr>
+EOF
+}
+
+sub _print_results_as_html_enrich_test_name {
+	my $test_name = shift;
+
+	if ($test_name eq 'C++ (optimized with -O2)') {
+		return 'C++ <em>(<a href="http://gcc.gnu.org/onlinedocs/gcc-4.4.4/gcc/Optimize-Options.html#Optimize-Options">optimized with -O2</a>)</em>';
+	}
+	if ($test_name =~ /^Java (\d)$/) {
+		return 'Java '.$1.' (<a href="https://github.com/famzah/langs-performance/tree/master/java-optimizations">see notes</a>)';
+	}
+	if ($test_name =~ /^Java (\d) \(non-std lib\)$/) {
+		return '<font color="#D1D0CE">Java '.$1.' <em>(<a href="/2010/07/01/cpp-vs-python-vs-perl-vs-php-performance-benchmark/#comment-4084">non-std lib</a>)</em></font>';
+	}
+	if ($test_name =~ /^Python (\d\.\d) \+ PyPy$/) {
+		return '<font color="#D1D0CE">Python '.$1.' + PyPy</font>';
+	}
+	if ($test_name eq 'JavaScript (nodejs)') {
+		return 'Javascript (<a href="http://nodejs.org/">nodejs</a>)';
+	}
+	if ($test_name eq 'C++ (not optimized)') {
+		return '<font color="#D1D0CE">C++ <em>(not optimized)</em></font>';
+	}
+
+	return $test_name;
+}
+
+sub _print_results_as_html {
+	my $test_name = shift;
+	my $averages = shift;
+	my @slower = @{ $_[0] }; shift;
+	my $test_data = shift;
+
+	printf(
+		_print_results_as_html_template(),
+		_print_results_as_html_enrich_test_name($test_name),
+		$averages->{'user_t'},
+		$averages->{'sys_t'},
+		$averages->{'cpu_t'},
+		$slower[0],
+		$slower[1],
+		$test_data->{'meta'}->{'version'},
+		$test_data->{'meta'}->{'src_file'}
+	);
+}
+
+sub _print_results_as_text {
+	my $test_name = shift;
+	my $averages = shift;
+	my @slower = @{ $_[0] }; shift;
+	my $test_data = shift;
+
+	printf(
+		"%-30s: user_t=%6.3f sys_t=%6.3f cpu_t=%6.3f to_CPP=%5s to_prev=%5s version=%s\n",
+		$test_name,
+		$averages->{'user_t'},
+		$averages->{'sys_t'},
+		$averages->{'cpu_t'},
+		$slower[0],
+		$slower[1],
+		$test_data->{'meta'}->{'version'}
+	);
+}
+
+sub print_results {
+	my $output = shift;
+	my @sorted_all = @{ $_[0] }; shift;
+	my $test_data;
+	my $test_name;
+	my $averages;
+	my @slower = ();
+	my $idx = -1;
+	my ($sl_idx, $src_idx);
+	my $ratio;
+	my @args;
+
+	foreach (@sorted_all) {
+		$test_name = $_->{'test_name'};
+		$test_data = $_->{'test_data'};
+		$averages = $_->{'averages'};
+		++$idx;
+
+		#print Dumper($test_data->{'run_data'})."\n";
+		#print Dumper($averages)."\n";
+
+		if ($idx == 0) {
+			$slower[0] = '-';
+			$slower[1] = '-';
+		} else {
+			foreach $sl_idx (0,1) {
+				if ($sl_idx == 0) {
+					$src_idx = 0;
+				} else {
+					$src_idx = $idx - 1;
+				}
+
+				$ratio = $averages->{'cpu_t'} / $sorted_all[$src_idx]->{'averages'}->{'cpu_t'};
+
+				$slower[$sl_idx] = sprintf('%d%%', ($ratio - 1.00) * 100);
+			}
+		}
+
+		@args = ($test_name, $averages, \@slower, $test_data);
+		if ($output eq 'text') {
+			_print_results_as_text(@args);
+		} elsif ($output eq 'html') {
+			_print_results_as_html(@args);
+		} else {
+			die("Unknown output: $output");
+		}
+	}
+}
+
+sub usage {
+	die("Usage: $0 [text|html]\nRead results at STDIN and format them as specified.\n");
+}
+
+sub parse_ARGV {
+	my $output_mode = shift @ARGV;
+
+	if (!defined($output_mode)) {
+		usage();
+	}
+	if ($output_mode !~ /^(text|html)$/) {
+		usage();
+	}
+
+	return $output_mode;
+}
+
+sub main {
+	my $line;
+	my $data = {};
+	my $averages;
+	my $k;
+	my $test_data;
+	my $test_name;
+	my @sorted_all = ();
+	my $output_mode;
+
+	$output_mode = parse_ARGV();
+
+	while ($line = <STDIN>) {
+		chomp($line);
+
+		if ($line =~ /^\s*#/) {
+			next;
+		}
+
+		if ($line !~ /^real_TIME:(\d+\.\d+)sec user_CPU:(\d+\.\d+)sec sys_CPU:(\d+\.\d+)sec max_RSS:(\d+)kb swaps:(\d+) ctx_sw:(\d+)\+(\d+) nlines:(\d+) run_try:(\d+)  header:'([^']+)' version:'([^']+)' src_file:(\S+)$/) {
+			die("Unable to parse line: $line\n");
+		}
+
+		my $row = {}; # new reference every time
+		my $run_try;
+		my $test_name;
+		$row->{'real_t'} = $1;
+		$row->{'user_t'} = $2;
+		$row->{'sys_t'} = $3;
+		$row->{'max_RSS'} = $4;
+		$row->{'swaps'} = $5;
+		$row->{'ctx_sw_unvol'} = $6;
+		$row->{'ctx_sw_vol'} = $7;
+		$row->{'nlines'} = $8;
+		$run_try = $9 - 1; # XXX: fix index
+		#
+		$test_name = $10;
+		$row->{'version'} = $11;
+		$row->{'src_file'} = $12;
+
+		# trim white-space
+		$row->{'version'} =~ s/^\s*//;
+		$row->{'version'} =~ s/\s*$//;
+
+		if (!exists($data->{$test_name})) {
+			$data->{$test_name} = {
+				'meta' => {},
+				'run_data' => [],
+			};
+			foreach $k (qw/ version src_file /) {
+				$data->{$test_name}->{'meta'}->{$k} = $row->{$k};
+			}
+		}
+
+		foreach $k (qw/ version src_file /) {
+			if ($data->{$test_name}->{'meta'}->{$k} ne $row->{$k}) {
+				die("Sanity check failed for meta: $line");
+			}
+		}
+
+		if (exists($data->{$test_name}->{'run_data'}->[$run_try])) {
+			die("Duplicate run#: $line");
+		}
+		delete($row->{'version'});
+		delete($row->{'src_file'});
+		$data->{$test_name}->{'run_data'}->[$run_try] = $row;
+		foreach $k (qw/ version src_file /) {
+			delete($data->{$test_name}->{'run_data'}->[$run_try]->{$k});
+		}
+	}
+
+	while (($test_name, $test_data) = each %{$data}) {
+		$averages = analyze_run_data($test_name, $test_data->{'run_data'});
+		push(@sorted_all,
+		{
+			'test_name' => $test_name,
+			'test_data' => $test_data,
+			'averages' => $averages,
+		});
+	}
+
+	@sorted_all = sort {
+		$a->{'averages'}->{'cpu_t'} <=> $b->{'averages'}->{'cpu_t'};
+	} @sorted_all;
+
+	if ($output_mode eq 'html') {
+		_print_results_as_html_header();
+	}
+	print_results($output_mode, \@sorted_all);
+	if ($output_mode eq 'html') {
+		_print_results_as_html_footer();
+	}
+}
+
+main();
