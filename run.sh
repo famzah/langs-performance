@@ -134,3 +134,9 @@ C='nodejs' ; SRC='primes.js' ; run_benchmark 'JavaScript (nodejs)' 'true' "$C $S
 ##
 
 C='ruby' ; SRC='primes.rb' ; run_benchmark 'Ruby' 'true' "$C $SRC" "$C -v" 'cat' "$SRC"
+
+##
+
+# -C opt-level=3 is the default opt level for the code produced by the --release target.
+C='rust'; SRC='primes.rs' ; run_benchmark 'Rust' 'rustc -C opt-level=3 -o primes.rs.out primes.rs' './primes.rs.out' 'rustc -V' 'head -n1' "$SRC"
+rm -f primes.rs.out
