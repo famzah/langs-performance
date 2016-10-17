@@ -16,8 +16,8 @@ elif [ "$_OS" == "Darwin" ]; then
 fi
 
 if [ "$TIME_CMD" == "" ]; then
-    echo "Unable to find the GNU time command."
-    echo "If you are on a non Linux OS such as Mac OS or *BSD you will need to install it separately."
+    echo "Unable to find the GNU time command." >&2
+    echo "If you are on a non-Linux OS such as Mac OS or *BSD you will need to install it separately." >&2
     exit -1
 fi
 
