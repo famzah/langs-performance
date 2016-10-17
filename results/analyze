@@ -263,7 +263,7 @@ sub main {
 	while ($line = <STDIN>) {
 		chomp($line);
 
-		if ($line =~ /^\s*#/) {
+		if ($line =~ /^(\s*#|SKIPPING)/) {
 			next;
 		}
 
