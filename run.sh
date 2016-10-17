@@ -8,14 +8,14 @@ MIN_NLINES="${MIN_NLINES:=10}" # it's a fatal error if we get less than this num
 SRC_FILTER="${SRC_FILTER:=x}" # if provided, execute only the given test
 DRY_RUN="${DRY_RUN:=0}" # if enabled, do only the compilation phase
 
-_OS=$(uname)
-if [ "$_OS" = "Linux" ]; then
-    TIME_CMD=$(which time)
-elif [ "$_OS" = "Darwin" ]; then
-    TIME_CMD=$(which gtime)
+_OS="$(uname)"
+if [ "$_OS" == "Linux" ]; then
+    TIME_CMD="$(which time)"
+elif [ "$_OS" == "Darwin" ]; then
+    TIME_CMD="$(which gtime)"
 fi
 
-if [ "$TIME_CMD" = "" ]; then
+if [ "$TIME_CMD" == "" ]; then
     echo "Unable to find the GNU time command."
     echo "If you are on a non Linux OS such as Mac OS or *BSD you will need to install it separately."
     exit -1
@@ -65,7 +65,7 @@ function run_benchmark() {
 
 		OUT="$(
 		{
-			$TIME_CMD -o "$TIMES_FILE" --format \
+			"$TIME_CMD" -o "$TIMES_FILE" --format \
 				'real_TIME:%esec user_CPU:%Usec sys_CPU:%Ssec max_RSS:%Mkb swaps:%W ctx_sw:%c+%w' \
 				$RUN_CMD
 		} 2>&1
