@@ -61,7 +61,7 @@ function run_benchmark() {
 
 		echo "# ... run $n"
 
-		TIMES_FILE=$(mktemp) || exit 1
+		TIMES_FILE="$(mktemp)" || exit 1
 
 		OUT="$(
 		{
