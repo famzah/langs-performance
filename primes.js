@@ -25,7 +25,11 @@ function get_primes7(n) {
 		m = 2*i + 3;
 	}
 
-	var res = [2];
+	// due to a bug in node.js 4.3, we need to declare and init on separate lines
+	// or else node.js performs about four times slower
+	var res = [];
+	res.push(2);
+
 	for (var x = 0; x < s.length; x++) {
 		if (s[x]) {
 			res.push(s[x]);
