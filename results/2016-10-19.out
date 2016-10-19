@@ -1,0 +1,184 @@
+# Run time limited to 90 wall-clock seconds
+#
+# C++ (optimized with -O2)
+# ... compilation
+# ... run 1
+real_TIME:89.33sec user_CPU:84.16sec sys_CPU:5.15sec max_RSS:55164kb swaps:0 ctx_sw:389+1 nlines:946 run_try:1  header:'C++ (optimized with -O2)' version:'g++ (Debian 6.1.1-11) 6.1.1 20160802 ' src_file:primes.cpp
+# ... run 2
+real_TIME:89.98sec user_CPU:84.89sec sys_CPU:5.06sec max_RSS:55060kb swaps:0 ctx_sw:376+1 nlines:956 run_try:2  header:'C++ (optimized with -O2)' version:'g++ (Debian 6.1.1-11) 6.1.1 20160802 ' src_file:primes.cpp
+# ... run 3
+real_TIME:90.00sec user_CPU:85.02sec sys_CPU:4.96sec max_RSS:54972kb swaps:0 ctx_sw:365+1 nlines:958 run_try:3  header:'C++ (optimized with -O2)' version:'g++ (Debian 6.1.1-11) 6.1.1 20160802 ' src_file:primes.cpp
+# ... run 4
+real_TIME:90.05sec user_CPU:85.21sec sys_CPU:4.82sec max_RSS:54976kb swaps:0 ctx_sw:365+1 nlines:926 run_try:4  header:'C++ (optimized with -O2)' version:'g++ (Debian 6.1.1-11) 6.1.1 20160802 ' src_file:primes.cpp
+# ... run 5
+real_TIME:89.95sec user_CPU:84.88sec sys_CPU:5.05sec max_RSS:55080kb swaps:0 ctx_sw:402+1 nlines:942 run_try:5  header:'C++ (optimized with -O2)' version:'g++ (Debian 6.1.1-11) 6.1.1 20160802 ' src_file:primes.cpp
+# ... run 6
+real_TIME:89.98sec user_CPU:85.06sec sys_CPU:4.90sec max_RSS:55148kb swaps:0 ctx_sw:454+1 nlines:940 run_try:6  header:'C++ (optimized with -O2)' version:'g++ (Debian 6.1.1-11) 6.1.1 20160802 ' src_file:primes.cpp
+# C++ (not optimized)
+# ... compilation
+# ... run 1
+real_TIME:89.64sec user_CPU:88.01sec sys_CPU:1.61sec max_RSS:55116kb swaps:0 ctx_sw:368+1 nlines:308 run_try:1  header:'C++ (not optimized)' version:'g++ (Debian 6.1.1-11) 6.1.1 20160802 ' src_file:primes.cpp
+# ... run 2
+real_TIME:90.15sec user_CPU:88.47sec sys_CPU:1.66sec max_RSS:55252kb swaps:0 ctx_sw:460+1 nlines:309 run_try:2  header:'C++ (not optimized)' version:'g++ (Debian 6.1.1-11) 6.1.1 20160802 ' src_file:primes.cpp
+# ... run 3
+real_TIME:90.08sec user_CPU:88.42sec sys_CPU:1.64sec max_RSS:55156kb swaps:0 ctx_sw:442+1 nlines:290 run_try:3  header:'C++ (not optimized)' version:'g++ (Debian 6.1.1-11) 6.1.1 20160802 ' src_file:primes.cpp
+# ... run 4
+real_TIME:89.76sec user_CPU:88.22sec sys_CPU:1.53sec max_RSS:55140kb swaps:0 ctx_sw:373+1 nlines:293 run_try:4  header:'C++ (not optimized)' version:'g++ (Debian 6.1.1-11) 6.1.1 20160802 ' src_file:primes.cpp
+# ... run 5
+real_TIME:90.15sec user_CPU:88.51sec sys_CPU:1.63sec max_RSS:54984kb swaps:0 ctx_sw:394+1 nlines:310 run_try:5  header:'C++ (not optimized)' version:'g++ (Debian 6.1.1-11) 6.1.1 20160802 ' src_file:primes.cpp
+# ... run 6
+real_TIME:89.81sec user_CPU:88.10sec sys_CPU:1.70sec max_RSS:55252kb swaps:0 ctx_sw:392+1 nlines:305 run_try:6  header:'C++ (not optimized)' version:'g++ (Debian 6.1.1-11) 6.1.1 20160802 ' src_file:primes.cpp
+# Go
+# ... compilation
+# ... run 1
+real_TIME:90.08sec user_CPU:141.80sec sys_CPU:4.46sec max_RSS:161212kb swaps:0 ctx_sw:31133+65870 nlines:541 run_try:1  header:'Go' version:'go version go1.7.1 linux/amd64 ' src_file:primes.go
+# ... run 2
+real_TIME:90.04sec user_CPU:138.70sec sys_CPU:4.48sec max_RSS:177920kb swaps:0 ctx_sw:28835+63343 nlines:528 run_try:2  header:'Go' version:'go version go1.7.1 linux/amd64 ' src_file:primes.go
+# ... run 3
+real_TIME:90.15sec user_CPU:142.48sec sys_CPU:4.37sec max_RSS:162172kb swaps:0 ctx_sw:26157+60311 nlines:541 run_try:3  header:'Go' version:'go version go1.7.1 linux/amd64 ' src_file:primes.go
+# ... run 4
+real_TIME:90.15sec user_CPU:141.80sec sys_CPU:4.48sec max_RSS:166184kb swaps:0 ctx_sw:28291+62247 nlines:544 run_try:4  header:'Go' version:'go version go1.7.1 linux/amd64 ' src_file:primes.go
+# ... run 5
+real_TIME:90.22sec user_CPU:136.74sec sys_CPU:4.30sec max_RSS:161200kb swaps:0 ctx_sw:32004+65088 nlines:522 run_try:5  header:'Go' version:'go version go1.7.1 linux/amd64 ' src_file:primes.go
+# ... run 6
+real_TIME:90.16sec user_CPU:139.38sec sys_CPU:4.60sec max_RSS:149760kb swaps:0 ctx_sw:30313+63437 nlines:531 run_try:6  header:'Go' version:'go version go1.7.1 linux/amd64 ' src_file:primes.go
+# Python 2.7 + PyPy
+# ... compilation
+# ... run 1
+real_TIME:89.98sec user_CPU:82.61sec sys_CPU:7.18sec max_RSS:112552kb swaps:0 ctx_sw:461+203 nlines:605 run_try:1  header:'Python 2.7 + PyPy' version:'Python 2.7.10 (5.4.1+dfsg-1, Sep 06 2016, 23:05:48) [PyPy 5.4.1 with GCC 6.2.0 20160830] ' src_file:primes.py
+# ... run 2
+real_TIME:89.92sec user_CPU:82.63sec sys_CPU:7.26sec max_RSS:113132kb swaps:0 ctx_sw:450+1 nlines:604 run_try:2  header:'Python 2.7 + PyPy' version:'Python 2.7.10 (5.4.1+dfsg-1, Sep 06 2016, 23:05:48) [PyPy 5.4.1 with GCC 6.2.0 20160830] ' src_file:primes.py
+# ... run 3
+real_TIME:89.98sec user_CPU:82.69sec sys_CPU:7.27sec max_RSS:113236kb swaps:0 ctx_sw:305+1 nlines:600 run_try:3  header:'Python 2.7 + PyPy' version:'Python 2.7.10 (5.4.1+dfsg-1, Sep 06 2016, 23:05:48) [PyPy 5.4.1 with GCC 6.2.0 20160830] ' src_file:primes.py
+# ... run 4
+real_TIME:90.05sec user_CPU:82.88sec sys_CPU:7.16sec max_RSS:112832kb swaps:0 ctx_sw:310+1 nlines:605 run_try:4  header:'Python 2.7 + PyPy' version:'Python 2.7.10 (5.4.1+dfsg-1, Sep 06 2016, 23:05:48) [PyPy 5.4.1 with GCC 6.2.0 20160830] ' src_file:primes.py
+# ... run 5
+real_TIME:89.92sec user_CPU:82.64sec sys_CPU:7.26sec max_RSS:113004kb swaps:0 ctx_sw:360+1 nlines:607 run_try:5  header:'Python 2.7 + PyPy' version:'Python 2.7.10 (5.4.1+dfsg-1, Sep 06 2016, 23:05:48) [PyPy 5.4.1 with GCC 6.2.0 20160830] ' src_file:primes.py
+# ... run 6
+real_TIME:89.98sec user_CPU:82.74sec sys_CPU:7.22sec max_RSS:112988kb swaps:0 ctx_sw:308+1 nlines:585 run_try:6  header:'Python 2.7 + PyPy' version:'Python 2.7.10 (5.4.1+dfsg-1, Sep 06 2016, 23:05:48) [PyPy 5.4.1 with GCC 6.2.0 20160830] ' src_file:primes.py
+# Python 2.7
+# ... compilation
+# ... run 1
+real_TIME:91.86sec user_CPU:91.38sec sys_CPU:0.42sec max_RSS:197172kb swaps:0 ctx_sw:308+58 nlines:36 run_try:1  header:'Python 2.7' version:'Python 2.7.12+ ' src_file:primes.py
+# ... run 2
+real_TIME:90.06sec user_CPU:89.62sec sys_CPU:0.42sec max_RSS:197148kb swaps:0 ctx_sw:363+1 nlines:35 run_try:2  header:'Python 2.7' version:'Python 2.7.12+ ' src_file:primes.py
+# ... run 3
+real_TIME:91.58sec user_CPU:91.13sec sys_CPU:0.44sec max_RSS:197196kb swaps:0 ctx_sw:379+1 nlines:36 run_try:3  header:'Python 2.7' version:'Python 2.7.12+ ' src_file:primes.py
+# ... run 4
+real_TIME:89.56sec user_CPU:89.14sec sys_CPU:0.40sec max_RSS:197232kb swaps:0 ctx_sw:367+1 nlines:36 run_try:4  header:'Python 2.7' version:'Python 2.7.12+ ' src_file:primes.py
+# ... run 5
+real_TIME:90.58sec user_CPU:90.20sec sys_CPU:0.36sec max_RSS:197316kb swaps:0 ctx_sw:446+1 nlines:36 run_try:5  header:'Python 2.7' version:'Python 2.7.12+ ' src_file:primes.py
+# ... run 6
+real_TIME:91.13sec user_CPU:90.71sec sys_CPU:0.40sec max_RSS:197148kb swaps:0 ctx_sw:366+1 nlines:36 run_try:6  header:'Python 2.7' version:'Python 2.7.12+ ' src_file:primes.py
+# Python 3.5
+# ... compilation
+# ... run 1
+real_TIME:91.39sec user_CPU:90.63sec sys_CPU:0.70sec max_RSS:242576kb swaps:0 ctx_sw:400+70 nlines:51 run_try:1  header:'Python 3.5' version:'Python 3.5.2+ ' src_file:primes.py
+# ... run 2
+real_TIME:91.45sec user_CPU:90.75sec sys_CPU:0.68sec max_RSS:242764kb swaps:0 ctx_sw:380+1 nlines:51 run_try:2  header:'Python 3.5' version:'Python 3.5.2+ ' src_file:primes.py
+# ... run 3
+real_TIME:90.56sec user_CPU:89.95sec sys_CPU:0.59sec max_RSS:242644kb swaps:0 ctx_sw:397+1 nlines:50 run_try:3  header:'Python 3.5' version:'Python 3.5.2+ ' src_file:primes.py
+# ... run 4
+real_TIME:90.77sec user_CPU:90.11sec sys_CPU:0.64sec max_RSS:242728kb swaps:0 ctx_sw:368+1 nlines:50 run_try:4  header:'Python 3.5' version:'Python 3.5.2+ ' src_file:primes.py
+# ... run 5
+real_TIME:91.29sec user_CPU:90.66sec sys_CPU:0.62sec max_RSS:242752kb swaps:0 ctx_sw:373+1 nlines:51 run_try:5  header:'Python 3.5' version:'Python 3.5.2+ ' src_file:primes.py
+# ... run 6
+real_TIME:90.52sec user_CPU:89.91sec sys_CPU:0.59sec max_RSS:242644kb swaps:0 ctx_sw:387+1 nlines:49 run_try:6  header:'Python 3.5' version:'Python 3.5.2+ ' src_file:primes.py
+# Perl
+# ... compilation
+# ... run 1
+real_TIME:91.52sec user_CPU:91.45sec sys_CPU:0.04sec max_RSS:242536kb swaps:0 ctx_sw:424+18 nlines:36 run_try:1  header:'Perl' version:'This is perl 5, version 24, subversion 1 (v5.24.1) built for x86_64-linux-gnu-thread-multi ' src_file:primes.pl
+# ... run 2
+real_TIME:90.05sec user_CPU:89.96sec sys_CPU:0.07sec max_RSS:242540kb swaps:0 ctx_sw:397+1 nlines:36 run_try:2  header:'Perl' version:'This is perl 5, version 24, subversion 1 (v5.24.1) built for x86_64-linux-gnu-thread-multi ' src_file:primes.pl
+# ... run 3
+real_TIME:91.89sec user_CPU:91.79sec sys_CPU:0.08sec max_RSS:242616kb swaps:0 ctx_sw:391+1 nlines:37 run_try:3  header:'Perl' version:'This is perl 5, version 24, subversion 1 (v5.24.1) built for x86_64-linux-gnu-thread-multi ' src_file:primes.pl
+# ... run 4
+real_TIME:89.78sec user_CPU:89.72sec sys_CPU:0.04sec max_RSS:242532kb swaps:0 ctx_sw:388+1 nlines:36 run_try:4  header:'Perl' version:'This is perl 5, version 24, subversion 1 (v5.24.1) built for x86_64-linux-gnu-thread-multi ' src_file:primes.pl
+# ... run 5
+real_TIME:89.80sec user_CPU:89.75sec sys_CPU:0.03sec max_RSS:242548kb swaps:0 ctx_sw:385+1 nlines:36 run_try:5  header:'Perl' version:'This is perl 5, version 24, subversion 1 (v5.24.1) built for x86_64-linux-gnu-thread-multi ' src_file:primes.pl
+# ... run 6
+real_TIME:91.05sec user_CPU:90.98sec sys_CPU:0.05sec max_RSS:242540kb swaps:0 ctx_sw:391+1 nlines:36 run_try:6  header:'Perl' version:'This is perl 5, version 24, subversion 1 (v5.24.1) built for x86_64-linux-gnu-thread-multi ' src_file:primes.pl
+# PHP 7.0
+# ... compilation
+# ... run 1
+real_TIME:90.40sec user_CPU:88.04sec sys_CPU:2.34sec max_RSS:231384kb swaps:0 ctx_sw:580+2 nlines:137 run_try:1  header:'PHP 7.0' version:'PHP 7.0.11-1 (cli) ( NTS ) ' src_file:primes.php
+# ... run 2
+real_TIME:89.56sec user_CPU:87.12sec sys_CPU:2.42sec max_RSS:231320kb swaps:0 ctx_sw:357+1 nlines:136 run_try:2  header:'PHP 7.0' version:'PHP 7.0.11-1 (cli) ( NTS ) ' src_file:primes.php
+# ... run 3
+real_TIME:90.34sec user_CPU:88.06sec sys_CPU:2.26sec max_RSS:231284kb swaps:0 ctx_sw:362+1 nlines:138 run_try:3  header:'PHP 7.0' version:'PHP 7.0.11-1 (cli) ( NTS ) ' src_file:primes.php
+# ... run 4
+real_TIME:89.59sec user_CPU:87.07sec sys_CPU:2.50sec max_RSS:231160kb swaps:0 ctx_sw:359+1 nlines:134 run_try:4  header:'PHP 7.0' version:'PHP 7.0.11-1 (cli) ( NTS ) ' src_file:primes.php
+# ... run 5
+real_TIME:89.86sec user_CPU:87.43sec sys_CPU:2.41sec max_RSS:231528kb swaps:0 ctx_sw:563+1 nlines:135 run_try:5  header:'PHP 7.0' version:'PHP 7.0.11-1 (cli) ( NTS ) ' src_file:primes.php
+# ... run 6
+real_TIME:90.22sec user_CPU:87.65sec sys_CPU:2.54sec max_RSS:231596kb swaps:0 ctx_sw:362+1 nlines:135 run_try:6  header:'PHP 7.0' version:'PHP 7.0.11-1 (cli) ( NTS ) ' src_file:primes.php
+# Java 8
+# ... compilation
+# ... run 1
+real_TIME:90.60sec user_CPU:125.76sec sys_CPU:0.85sec max_RSS:513348kb swaps:0 ctx_sw:3732+5690 nlines:105 run_try:1  header:'Java 8' version:'javac 1.8.0_102 ' src_file:primes.java
+# ... run 2
+real_TIME:90.66sec user_CPU:126.32sec sys_CPU:0.72sec max_RSS:513500kb swaps:0 ctx_sw:3413+5360 nlines:105 run_try:2  header:'Java 8' version:'javac 1.8.0_102 ' src_file:primes.java
+# ... run 3
+real_TIME:91.37sec user_CPU:127.24sec sys_CPU:0.91sec max_RSS:513304kb swaps:0 ctx_sw:3591+5667 nlines:105 run_try:3  header:'Java 8' version:'javac 1.8.0_102 ' src_file:primes.java
+# ... run 4
+real_TIME:90.32sec user_CPU:125.82sec sys_CPU:0.98sec max_RSS:513156kb swaps:0 ctx_sw:3666+5105 nlines:104 run_try:4  header:'Java 8' version:'javac 1.8.0_102 ' src_file:primes.java
+# ... run 5
+real_TIME:90.08sec user_CPU:124.94sec sys_CPU:0.86sec max_RSS:513120kb swaps:0 ctx_sw:3896+5723 nlines:104 run_try:5  header:'Java 8' version:'javac 1.8.0_102 ' src_file:primes.java
+# ... run 6
+real_TIME:90.83sec user_CPU:127.53sec sys_CPU:0.73sec max_RSS:513444kb swaps:0 ctx_sw:3587+5348 nlines:105 run_try:6  header:'Java 8' version:'javac 1.8.0_102 ' src_file:primes.java
+# Java 8 (non-std lib)
+# ... compilation
+# ... run 1
+real_TIME:90.13sec user_CPU:89.97sec sys_CPU:0.48sec max_RSS:462088kb swaps:0 ctx_sw:4740+6066 nlines:831 run_try:1  header:'Java 8 (non-std lib)' version:'javac 1.8.0_102 ' src_file:primes-alt.java
+# ... run 2
+real_TIME:90.12sec user_CPU:89.86sec sys_CPU:0.45sec max_RSS:476500kb swaps:0 ctx_sw:4713+6079 nlines:827 run_try:2  header:'Java 8 (non-std lib)' version:'javac 1.8.0_102 ' src_file:primes-alt.java
+# ... run 3
+real_TIME:90.16sec user_CPU:89.91sec sys_CPU:0.43sec max_RSS:477124kb swaps:0 ctx_sw:4666+6039 nlines:835 run_try:3  header:'Java 8 (non-std lib)' version:'javac 1.8.0_102 ' src_file:primes-alt.java
+# ... run 4
+real_TIME:90.09sec user_CPU:89.89sec sys_CPU:0.52sec max_RSS:477648kb swaps:0 ctx_sw:4904+6161 nlines:824 run_try:4  header:'Java 8 (non-std lib)' version:'javac 1.8.0_102 ' src_file:primes-alt.java
+# ... run 5
+real_TIME:90.16sec user_CPU:89.92sec sys_CPU:0.56sec max_RSS:445532kb swaps:0 ctx_sw:4926+6066 nlines:817 run_try:5  header:'Java 8 (non-std lib)' version:'javac 1.8.0_102 ' src_file:primes-alt.java
+# ... run 6
+real_TIME:90.11sec user_CPU:90.01sec sys_CPU:0.52sec max_RSS:445612kb swaps:0 ctx_sw:5903+6386 nlines:818 run_try:6  header:'Java 8 (non-std lib)' version:'javac 1.8.0_102 ' src_file:primes-alt.java
+# JavaScript (nodejs)
+# ... compilation
+# ... run 1
+real_TIME:90.22sec user_CPU:67.42sec sys_CPU:22.71sec max_RSS:439436kb swaps:0 ctx_sw:1423+598 nlines:492 run_try:1  header:'JavaScript (nodejs)' version:'v4.3.1 ' src_file:primes.js
+# ... run 2
+real_TIME:90.12sec user_CPU:67.11sec sys_CPU:23.05sec max_RSS:439376kb swaps:0 ctx_sw:371+267 nlines:488 run_try:2  header:'JavaScript (nodejs)' version:'v4.3.1 ' src_file:primes.js
+# ... run 3
+real_TIME:90.13sec user_CPU:67.54sec sys_CPU:22.60sec max_RSS:439532kb swaps:0 ctx_sw:882+269 nlines:492 run_try:3  header:'JavaScript (nodejs)' version:'v4.3.1 ' src_file:primes.js
+# ... run 4
+real_TIME:90.17sec user_CPU:67.23sec sys_CPU:22.96sec max_RSS:439676kb swaps:0 ctx_sw:568+372 nlines:493 run_try:4  header:'JavaScript (nodejs)' version:'v4.3.1 ' src_file:primes.js
+# ... run 5
+real_TIME:90.08sec user_CPU:67.17sec sys_CPU:22.93sec max_RSS:439516kb swaps:0 ctx_sw:574+378 nlines:493 run_try:5  header:'JavaScript (nodejs)' version:'v4.3.1 ' src_file:primes.js
+# ... run 6
+real_TIME:90.18sec user_CPU:67.18sec sys_CPU:23.02sec max_RSS:439496kb swaps:0 ctx_sw:853+266 nlines:487 run_try:6  header:'JavaScript (nodejs)' version:'v4.3.1 ' src_file:primes.js
+# Ruby
+# ... compilation
+# ... run 1
+real_TIME:90.63sec user_CPU:88.84sec sys_CPU:1.72sec max_RSS:228520kb swaps:0 ctx_sw:447+80 nlines:71 run_try:1  header:'Ruby' version:'ruby 2.3.1p112 (2016-04-26) [x86_64-linux-gnu] ' src_file:primes.rb
+# ... run 2
+real_TIME:90.37sec user_CPU:88.84sec sys_CPU:1.52sec max_RSS:228420kb swaps:0 ctx_sw:390+3 nlines:71 run_try:2  header:'Ruby' version:'ruby 2.3.1p112 (2016-04-26) [x86_64-linux-gnu] ' src_file:primes.rb
+# ... run 3
+real_TIME:90.47sec user_CPU:88.86sec sys_CPU:1.60sec max_RSS:228504kb swaps:0 ctx_sw:379+3 nlines:71 run_try:3  header:'Ruby' version:'ruby 2.3.1p112 (2016-04-26) [x86_64-linux-gnu] ' src_file:primes.rb
+# ... run 4
+real_TIME:89.86sec user_CPU:88.29sec sys_CPU:1.55sec max_RSS:228428kb swaps:0 ctx_sw:379+3 nlines:70 run_try:4  header:'Ruby' version:'ruby 2.3.1p112 (2016-04-26) [x86_64-linux-gnu] ' src_file:primes.rb
+# ... run 5
+real_TIME:90.64sec user_CPU:88.96sec sys_CPU:1.66sec max_RSS:228360kb swaps:0 ctx_sw:373+3 nlines:71 run_try:5  header:'Ruby' version:'ruby 2.3.1p112 (2016-04-26) [x86_64-linux-gnu] ' src_file:primes.rb
+# ... run 6
+real_TIME:89.69sec user_CPU:88.11sec sys_CPU:1.56sec max_RSS:228496kb swaps:0 ctx_sw:381+3 nlines:64 run_try:6  header:'Ruby' version:'ruby 2.3.1p112 (2016-04-26) [x86_64-linux-gnu] ' src_file:primes.rb
+# Rust
+# ... compilation
+# ... run 1
+real_TIME:90.00sec user_CPU:78.55sec sys_CPU:11.42sec max_RSS:36164kb swaps:0 ctx_sw:620+1 nlines:874 run_try:1  header:'Rust' version:'rustc 1.12.0 (3191fbae9 2016-09-23) ' src_file:primes.rs
+# ... run 2
+real_TIME:90.10sec user_CPU:78.96sec sys_CPU:11.10sec max_RSS:36296kb swaps:0 ctx_sw:1166+1 nlines:878 run_try:2  header:'Rust' version:'rustc 1.12.0 (3191fbae9 2016-09-23) ' src_file:primes.rs
+# ... run 3
+real_TIME:90.04sec user_CPU:79.13sec sys_CPU:10.90sec max_RSS:36144kb swaps:0 ctx_sw:457+1 nlines:867 run_try:3  header:'Rust' version:'rustc 1.12.0 (3191fbae9 2016-09-23) ' src_file:primes.rs
+# ... run 4
+real_TIME:90.01sec user_CPU:78.53sec sys_CPU:11.46sec max_RSS:36160kb swaps:0 ctx_sw:390+1 nlines:901 run_try:4  header:'Rust' version:'rustc 1.12.0 (3191fbae9 2016-09-23) ' src_file:primes.rs
+# ... run 5
+real_TIME:90.02sec user_CPU:78.68sec sys_CPU:11.33sec max_RSS:36208kb swaps:0 ctx_sw:370+1 nlines:894 run_try:5  header:'Rust' version:'rustc 1.12.0 (3191fbae9 2016-09-23) ' src_file:primes.rs
+# ... run 6
+real_TIME:90.08sec user_CPU:78.56sec sys_CPU:11.48sec max_RSS:36132kb swaps:0 ctx_sw:1235+1 nlines:850 run_try:6  header:'Rust' version:'rustc 1.12.0 (3191fbae9 2016-09-23) ' src_file:primes.rs
