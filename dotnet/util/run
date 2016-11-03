@@ -1,0 +1,4 @@
+#!/bin/bash
+
+export DOTNET_CLI_TELEMETRY_OPTOUT=1 # slows down execution initially depending on your Internet speed
+dotnet run -c Release | grep -v "was previously compiled. Skipping compilation"

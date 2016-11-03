@@ -1,0 +1,4 @@
+#!/bin/bash
+
+dotnet restore >/dev/null
+dotnet build -c Release >/dev/null
