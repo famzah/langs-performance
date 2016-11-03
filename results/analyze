@@ -141,6 +141,9 @@ sub _print_results_as_html_enrich_test_name {
 	if ($test_name eq 'C++ (not optimized)') {
 		return '<font color="#D1D0CE">C++ <em>(not optimized)</em></font>';
 	}
+	if ($test_name =~ /^C# .NET Core(.*)$/) {
+		return '<a href="https://dotnet.github.io/">C# .NET Core</a>'.$1;
+	}
 
 	return $test_name;
 }
