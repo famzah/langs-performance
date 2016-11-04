@@ -185,14 +185,14 @@ real_TIME:90.08sec user_CPU:78.56sec sys_CPU:11.48sec max_RSS:36132kb swaps:0 ct
 # C# .NET Core Linux
 # ... compilation
 # ... run 1
-real_TIME:91.13sec user_CPU:85.65sec sys_CPU:4.98sec max_RSS:231168kb swaps:0 ctx_sw:3630+6787 nlines:311 run_try:1  header:'C# .NET Core Linux' version:'1.0.0-preview2-003131 ' src_file:primes.dotnet
+real_TIME:90.74sec user_CPU:83.59sec sys_CPU:6.17sec max_RSS:230572kb swaps:0 ctx_sw:4085+6711 nlines:534 run_try:1  header:'C# .NET Core Linux' version:'1.0.0-preview2-003131 ' src_file:primes.dotnet
 # ... run 2
-real_TIME:91.10sec user_CPU:85.32sec sys_CPU:5.56sec max_RSS:230856kb swaps:0 ctx_sw:3668+6729 nlines:308 run_try:2  header:'C# .NET Core Linux' version:'1.0.0-preview2-003131 ' src_file:primes.dotnet
+real_TIME:90.66sec user_CPU:83.62sec sys_CPU:6.06sec max_RSS:230504kb swaps:0 ctx_sw:3990+7251 nlines:526 run_try:2  header:'C# .NET Core Linux' version:'1.0.0-preview2-003131 ' src_file:primes.dotnet
 # ... run 3
-real_TIME:91.17sec user_CPU:84.20sec sys_CPU:5.43sec max_RSS:230820kb swaps:0 ctx_sw:3436+6879 nlines:312 run_try:3  header:'C# .NET Core Linux' version:'1.0.0-preview2-003131 ' src_file:primes.dotnet
+real_TIME:90.72sec user_CPU:83.31sec sys_CPU:6.32sec max_RSS:230768kb swaps:0 ctx_sw:3846+6857 nlines:534 run_try:3  header:'C# .NET Core Linux' version:'1.0.0-preview2-003131 ' src_file:primes.dotnet
 # ... run 4
-real_TIME:91.10sec user_CPU:85.54sec sys_CPU:5.09sec max_RSS:217660kb swaps:0 ctx_sw:3795+6998 nlines:325 run_try:4  header:'C# .NET Core Linux' version:'1.0.0-preview2-003131 ' src_file:primes.dotnet
+real_TIME:90.68sec user_CPU:83.67sec sys_CPU:5.86sec max_RSS:230596kb swaps:0 ctx_sw:3889+6978 nlines:523 run_try:4  header:'C# .NET Core Linux' version:'1.0.0-preview2-003131 ' src_file:primes.dotnet
 # ... run 5
-real_TIME:91.04sec user_CPU:83.66sec sys_CPU:5.59sec max_RSS:217436kb swaps:0 ctx_sw:3634+6709 nlines:320 run_try:5  header:'C# .NET Core Linux' version:'1.0.0-preview2-003131 ' src_file:primes.dotnet
+real_TIME:90.70sec user_CPU:83.51sec sys_CPU:6.20sec max_RSS:230656kb swaps:0 ctx_sw:3737+6842 nlines:534 run_try:5  header:'C# .NET Core Linux' version:'1.0.0-preview2-003131 ' src_file:primes.dotnet
 # ... run 6
-real_TIME:90.95sec user_CPU:84.51sec sys_CPU:6.47sec max_RSS:230756kb swaps:0 ctx_sw:3104+6973 nlines:323 run_try:6  header:'C# .NET Core Linux' version:'1.0.0-preview2-003131 ' src_file:primes.dotnet
+real_TIME:90.54sec user_CPU:84.08sec sys_CPU:4.78sec max_RSS:230980kb swaps:0 ctx_sw:4528+7721 nlines:519 run_try:6  header:'C# .NET Core Linux' version:'1.0.0-preview2-003131 ' src_file:primes.dotnet
