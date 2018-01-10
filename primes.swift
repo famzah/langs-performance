@@ -16,8 +16,10 @@ func get_primes7(_ n: Int) -> [Int] {
   var m = 3
   while m <= mroot {
     if s[i] != 0 {
-      for j in stride(from: (m*m - 3) / 2, to: half, by: m) {
+      var j: Int = (m*m - 3) / 2
+      while j < half {
         s[j] = 0
+        j += m
       }
     }
     i += 1
