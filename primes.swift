@@ -17,13 +17,14 @@ func get_primes7(_ n: Int) -> [Int] {
   while m <= mroot {
     if s[i] != 0 {
       var j: Int = (m*m - 3) / 2
+      s[j] = 0
       while j < half {
         s[j] = 0
         j += m
       }
     }
     i += 1
-    m += 2
+    m = 2*i + 3
   }
   return [2] + s.filter { $0 != 0 }
 }
