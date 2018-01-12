@@ -110,10 +110,21 @@ go clean
 
 ##
 
+C='swiftc' ; SRC='primes.swift'  ; run_benchmark 'Swift (optimized with -O)' \
+	"$C $SRC -o primes.swift.out -O -swift-version 4" './primes.swift.out' "$C -version" 'head -n1' "$SRC"
+rm -f ./primes.swift.out
+
+C='swiftc' ; SRC='primes.swift'  ; run_benchmark 'Swift (not optimized)' \
+	"$C $SRC -o primes.swift.out -swift-version 4" './primes.swift.out' "$C -version" 'head -n1' "$SRC"
+rm -f ./primes.swift.out
+
+##
+
 C='pypy'      ; SRC='primes.py'  ; run_benchmark 'Python 2.7 + PyPy' 'true' "$C $SRC" "$C -V" 'cat' "$SRC"
 C='python2.7' ; SRC='primes.py'  ; run_benchmark 'Python 2.7' 'true' "$C $SRC" "$C -V" 'cat' "$SRC"
 C='python3.2' ; SRC='primes.py'  ; run_benchmark 'Python 3.2' 'true' "$C $SRC" "$C -V" 'cat' "$SRC"
 C='python3.5' ; SRC='primes.py'  ; run_benchmark 'Python 3.5' 'true' "$C $SRC" "$C -V" 'cat' "$SRC"
+C='python3.6' ; SRC='primes.py'  ; run_benchmark 'Python 3.6' 'true' "$C $SRC" "$C -V" 'cat' "$SRC"
 
 ##
 
