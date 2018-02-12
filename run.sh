@@ -171,3 +171,8 @@ C='dotnet' ; SRC='primes.dotnet' ; run_benchmark 'C# .NET Core Linux' \
 	'util/build' 'util/run' "$C --version" 'cat' "$SRC"
 rm -rf bin obj
 cd .. || exit 1
+
+##
+C='ldc2' ; SRC='primes.d' ; run_benchmark 'D' \
+	"$C -O -of primes.d.out $SRC" './primes.d.out' "$C -version" 'head -n1' "$SRC"
+rm -f ./primes.d.out

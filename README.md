@@ -1,5 +1,5 @@
 # langs-performance
-C++ vs. Python vs. Perl vs. PHP vs. Java vs. NodeJS vs. Go vs. Ruby vs. Rust vs. Swift performance benchmark
+C++ vs. Python vs. Perl vs. PHP vs. Java vs. NodeJS vs. Go vs. Ruby vs. Rust vs. Swift vs. D performance benchmark
 
 Blog articles:
 * 2016: https://blog.famzah.net/2016/09/10/cpp-vs-python-vs-php-vs-java-vs-others-performance-benchmark-2016-q3/
