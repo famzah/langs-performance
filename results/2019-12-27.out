@@ -1,0 +1,31 @@
+# Run time limited to 90 wall-clock seconds
+#
+# C# .NET Core Linux
+# ... compilation
+# ... run 1
+real_TIME:93.17sec user_CPU:91.41sec sys_CPU:2.49sec max_RSS:138688kb swaps:0 ctx_sw:12517+6932 nlines:449 run_try:1  header:'C# .NET Core Linux' version:'3.1.100 ' src_file:primes.dotnet
+# ... run 2
+real_TIME:93.14sec user_CPU:90.94sec sys_CPU:2.97sec max_RSS:138580kb swaps:0 ctx_sw:9603+8716 nlines:457 run_try:2  header:'C# .NET Core Linux' version:'3.1.100 ' src_file:primes.dotnet
+# ... run 3
+real_TIME:93.18sec user_CPU:91.00sec sys_CPU:2.88sec max_RSS:139028kb swaps:0 ctx_sw:12404+8669 nlines:457 run_try:3  header:'C# .NET Core Linux' version:'3.1.100 ' src_file:primes.dotnet
+# ... run 4
+real_TIME:93.18sec user_CPU:91.12sec sys_CPU:2.78sec max_RSS:139128kb swaps:0 ctx_sw:8365+7082 nlines:453 run_try:4  header:'C# .NET Core Linux' version:'3.1.100 ' src_file:primes.dotnet
+# ... run 5
+real_TIME:93.13sec user_CPU:91.15sec sys_CPU:2.70sec max_RSS:138828kb swaps:0 ctx_sw:8701+8375 nlines:454 run_try:5  header:'C# .NET Core Linux' version:'3.1.100 ' src_file:primes.dotnet
+# ... run 6
+real_TIME:93.17sec user_CPU:91.09sec sys_CPU:2.83sec max_RSS:138960kb swaps:0 ctx_sw:8193+7805 nlines:455 run_try:6  header:'C# .NET Core Linux' version:'3.1.100 ' src_file:primes.dotnet
+#
+# Go
+# ... compilation
+# ... run 1
+real_TIME:90.05sec user_CPU:113.87sec sys_CPU:10.55sec max_RSS:167152kb swaps:0 ctx_sw:60982+219644 nlines:504 run_try:1  header:'Go' version:'go version go1.7.1 linux/amd64 ' src_file:primes.go
+# ... run 2
+real_TIME:90.13sec user_CPU:117.87sec sys_CPU:10.56sec max_RSS:167200kb swaps:0 ctx_sw:59964+211799 nlines:517 run_try:2  header:'Go' version:'go version go1.7.1 linux/amd64 ' src_file:primes.go
+# ... run 3
+real_TIME:90.07sec user_CPU:121.28sec sys_CPU:10.66sec max_RSS:166488kb swaps:0 ctx_sw:54882+231384 nlines:530 run_try:3  header:'Go' version:'go version go1.7.1 linux/amd64 ' src_file:primes.go
+# ... run 4
+real_TIME:90.13sec user_CPU:113.09sec sys_CPU:9.47sec max_RSS:169184kb swaps:0 ctx_sw:62263+215271 nlines:498 run_try:4  header:'Go' version:'go version go1.7.1 linux/amd64 ' src_file:primes.go
+# ... run 5
+real_TIME:90.06sec user_CPU:118.83sec sys_CPU:10.01sec max_RSS:167064kb swaps:0 ctx_sw:67839+221764 nlines:527 run_try:5  header:'Go' version:'go version go1.7.1 linux/amd64 ' src_file:primes.go
+# ... run 6
+real_TIME:91.06sec user_CPU:119.83sec sys_CPU:11.01sec max_RSS:168064kb swaps:0 ctx_sw:67849+221764 nlines:526 run_try:6  header:'Go' version:'go version go1.7.1 linux/amd64 ' src_file:primes.go
