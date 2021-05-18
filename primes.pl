@@ -14,19 +14,12 @@ sub get_primes7($) {
 	# n**0.5 simpler than math.sqr(n)
 	my $mroot = $n ** 0.5;
 	my $half = scalar @s;
-	my $i = 0;
-	my $m = 3;
-	while ($m <= $mroot) {
+	for (my $m = 3, my $i = 0; $m <= $mroot; $i = $i + 1, $m = 2*$i + 3) {
 		if ($s[$i]) {
-			my $j = int(($m*$m - 3) / 2);
-			$s[$j] = 0;
-			while ($j < $half) {
+			for (my $j = int(($m*$m - 3) / 2); $j < $half; $j += $m) {
 				$s[$j] = 0;
-				$j += $m;
 			}
 		}
-		$i = $i + 1;
-		$m = 2*$i + 3;
 	}
 	my @res = (2);
 	foreach (@s) {
